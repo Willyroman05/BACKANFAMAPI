@@ -45,5 +45,5 @@ public partial class AntecedentePatPer
 
     public string NumExpediente { get; set; } = null!;
 
-    public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
+   // public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

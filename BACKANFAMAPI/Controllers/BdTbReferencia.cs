@@ -44,5 +44,45 @@ namespace BACKANFAMAPI.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        //Metodo para actualizar los datos en la api
+        [HttpPut("actualizar/{CodReferencias}")]
+        public async Task<IActionResult> Putferencia(int CodReferencias, Referencia referencia)
+        {
+            if (CodReferencias != referencia.CodReferencias)
+            {
+                return BadRequest();
+            }
+            _context.Entry(referencia).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!referenciaExists(CodReferencias))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+            return NoContent();
+        }
+
+
+        //Metodo post en la api
+        [HttpPost("post")]
+        public async Task<ActionResult<Referencia>> PostReferencia(Referencia referencia)
+        {
+            _context.Referencias.Add(referencia);
+            await _context.SaveChangesAsync();
+            return Ok(referencia);
+            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+        }
     }
 }

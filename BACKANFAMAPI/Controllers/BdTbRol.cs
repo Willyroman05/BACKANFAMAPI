@@ -30,8 +30,8 @@ namespace BACKANFAMAPI.Controllers
         {
             return await _context.Rols.ToListAsync();
         }
-        //Metodo post en la api
-        [HttpPost("post")]
+            //Metodo post en la api
+            [HttpPost("post")]
         public async Task<ActionResult<Rol>> PostRol(Rol rol)
         {
             _context.Rols.Add(rol);

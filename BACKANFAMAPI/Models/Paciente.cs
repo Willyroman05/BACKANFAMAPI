@@ -46,28 +46,30 @@ public partial class Paciente
     public string Centro { get; set; } = null!;
 
     public string Usuaria { get; set; } = null!;
-
-    public virtual ICollection<AntecedentePatFam> AntecedentePatFams { get; set; } = new List<AntecedentePatFam>();
-
-    public virtual ICollection<AntecedentePatPer> AntecedentePatPers { get; set; } = new List<AntecedentePatPer>();
-
-    public virtual ICollection<AntecedentesObstetrico> AntecedentesObstetricos { get; set; } = new List<AntecedentesObstetrico>();
-
-    public virtual ICollection<AntecedentesPersonale> AntecedentesPersonales { get; set; } = new List<AntecedentesPersonale>();
-
     public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
 
-    public virtual ICollection<EmbarazoActual> EmbarazoActuals { get; set; } = new List<EmbarazoActual>();
+    /* public virtual ICollection<AntecedentePatFam> AntecedentePatFams { get; set; } = new List<AntecedentePatFam>();
 
-    public virtual ICollection<Epicrisis> Epicrises { get; set; } = new List<Epicrisis>();
+     public virtual ICollection<AntecedentePatPer> AntecedentePatPers { get; set; } = new List<AntecedentePatPer>();
 
-    public virtual ICollection<HistoriaClinicaGeneral> HistoriaClinicaGenerals { get; set; } = new List<HistoriaClinicaGeneral>();
+     public virtual ICollection<AntecedentesObstetrico> AntecedentesObstetricos { get; set; } = new List<AntecedentesObstetrico>();
 
-    public virtual ICollection<Informacion> Informacions { get; set; } = new List<Informacion>();
+     public virtual ICollection<AntecedentesPersonale> AntecedentesPersonales { get; set; } = new List<AntecedentesPersonale>();
 
-    public virtual ICollection<ListaProblema> ListaProblemas { get; set; } = new List<ListaProblema>();
+    
 
-    public virtual ICollection<NotaEvolucion> NotaEvolucions { get; set; } = new List<NotaEvolucion>();
+     public virtual ICollection<EmbarazoActual> EmbarazoActuals { get; set; } = new List<EmbarazoActual>();
 
-    public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();
+     public virtual ICollection<Epicrisis> Epicrises { get; set; } = new List<Epicrisis>();
+
+     public virtual ICollection<HistoriaClinicaGeneral> HistoriaClinicaGenerals { get; set; } = new List<HistoriaClinicaGeneral>();
+
+     public virtual ICollection<Informacion> Informacions { get; set; } = new List<Informacion>();
+
+     public virtual ICollection<ListaProblema> ListaProblemas { get; set; } = new List<ListaProblema>();
+
+     public virtual ICollection<NotaEvolucion> NotaEvolucions { get; set; } = new List<NotaEvolucion>();
+
+     public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();
+    */
 }

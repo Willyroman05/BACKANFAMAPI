@@ -25,9 +25,9 @@ public partial class Referencia
 
     public int CodDepartamento { get; set; }
 
-    public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
+   /* public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
 
     public virtual Doctor CodDoctorNavigation { get; set; } = null!;
 
-    public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
+    public virtual Paciente NumExpedienteNavigation { get; set; } = null!;*/
 }

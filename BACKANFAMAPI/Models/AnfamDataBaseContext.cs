@@ -110,10 +110,10 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentePatFams)
+            /*entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentePatFams)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_FAM");
+                .HasConstraintName("FK_NUMEXP_FAM");*/
         });
 
         modelBuilder.Entity<AntecedentePatPer>(entity =>
@@ -149,10 +149,11 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.Vif).HasColumnName("VIF");
             entity.Property(e => e.Vih).HasColumnName("VIH");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentePatPers)
+          /*  entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentePatPers)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEX_PER");
+          */
         });
 
         modelBuilder.Entity<AntecedentesObstetrico>(entity =>
@@ -173,10 +174,11 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.Peso250).HasColumnName("PESO_250");
             entity.Property(e => e.Peso450).HasColumnName("PESO_450");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesObstetricos)
+          /*  entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesObstetricos)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEXP_RIESGO");
+          */
         });
 
         modelBuilder.Entity<AntecedentesPersonale>(entity =>
@@ -216,10 +218,10 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.Sa).HasColumnName("SA");
             entity.Property(e => e.VidaSexual).HasColumnName("VIDA_SEXUAL");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesPersonales)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesPersonales)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP");
+                .HasConstraintName("FK_NUMEXP");*/
         });
 
         modelBuilder.Entity<Departamento>(entity =>
@@ -294,10 +296,10 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.PresionArterial).HasColumnName("PRESION_ARTERIAL");
             entity.Property(e => e.Sangradov).HasColumnName("SANGRADOV");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.EmbarazoActuals)
+            /*entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.EmbarazoActuals)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_EMB");
+                .HasConstraintName("FK_NUMEXP_EMB");*/
         });
 
         modelBuilder.Entity<Epicrisis>(entity =>
@@ -347,15 +349,16 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("TRATAMIENTO");
 
-            entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.Epicrises)
+           /* entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.Epicrises)
                 .HasForeignKey(d => d.CodDoctor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DOCEPI");
+                .HasConstraintName("FK_DOCEPI");*/
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Epicrises)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Epicrises)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEXP_EPI");
+           */
         });
 
         modelBuilder.Entity<HistoriaClinicaGeneral>(entity =>
@@ -381,15 +384,15 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
 
-            entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.HistoriaClinicaGenerals)
+            /*entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.HistoriaClinicaGenerals)
                 .HasForeignKey(d => d.CodDoctor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DOCCLI");
+                .HasConstraintName("FK_DOCCLI");*/
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.HistoriaClinicaGenerals)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.HistoriaClinicaGenerals)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_CLI");
+                .HasConstraintName("FK_NUMEXP_CLI");*/
         });
 
         modelBuilder.Entity<Informacion>(entity =>
@@ -410,10 +413,10 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Informacions)
+            /*entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Informacions)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_INFO");
+                .HasConstraintName("FK_NUMEXP_INFO");*/
         });
 
         modelBuilder.Entity<ListaProblema>(entity =>
@@ -436,10 +439,10 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.NumeroNota).HasColumnName("NUMERO_NOTA");
             entity.Property(e => e.Resuelto).HasColumnName("RESUELTO");
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.ListaProblemas)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.ListaProblemas)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_PRO");
+                .HasConstraintName("FK_NUMEXP_PRO");*/
         });
 
         modelBuilder.Entity<NotaEvolucion>(entity =>
@@ -479,15 +482,15 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.Talla).HasColumnName("TALLA");
             entity.Property(e => e.Temperatura).HasColumnName("TEMPERATURA");
 
-            entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.NotaEvolucions)
+          /*  entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.NotaEvolucions)
                 .HasForeignKey(d => d.CodDoctor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CODDOC");
+                .HasConstraintName("FK_CODDOC");*/
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.NotaEvolucions)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.NotaEvolucions)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_NOTA");
+                .HasConstraintName("FK_NUMEXP_NOTA");*/
         });
 
         modelBuilder.Entity<Paciente>(entity =>
@@ -556,10 +559,10 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("USUARIA");
 
-            entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
+           /* entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.CodDepartamento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DEP");
+                .HasConstraintName("FK_DEP");*/
         });
 
         modelBuilder.Entity<Referencia>(entity =>
@@ -592,20 +595,20 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
 
-            entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Referencia)
+            /*entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Referencia)
                 .HasForeignKey(d => d.CodDepartamento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DEPREF");
+                .HasConstraintName("FK_DEPREF");*/
 
-            entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.Referencia)
+          /*  entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.Referencia)
                 .HasForeignKey(d => d.CodDoctor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DOCREF");
+                .HasConstraintName("FK_DOCREF");*/
 
-            entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Referencia)
+           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Referencia)
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_REF");
+                .HasConstraintName("FK_NUMEXP_REF");*/
         });
 
         modelBuilder.Entity<Rol>(entity =>

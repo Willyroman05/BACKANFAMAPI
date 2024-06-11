@@ -9,7 +9,7 @@ public partial class Departamento
 
     public string Nombre { get; set; } = null!;
 
-    public virtual ICollection<Paciente> Pacientes { get; set; } = new List<Paciente>();
+    /*public virtual ICollection<Paciente> Pacientes { get; set; } = new List<Paciente>();
 
-    public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();
+    public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();*/
 }

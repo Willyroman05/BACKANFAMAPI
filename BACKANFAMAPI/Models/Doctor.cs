@@ -22,7 +22,7 @@ public partial class Doctor
     public string? Telefono { get; set; }
 
     public string? Telefono2 { get; set; }
-
+    /*
     public virtual ICollection<Epicrisis> Epicrises { get; set; } = new List<Epicrisis>();
 
     public virtual ICollection<HistoriaClinicaGeneral> HistoriaClinicaGenerals { get; set; } = new List<HistoriaClinicaGeneral>();
@@ -30,4 +30,5 @@ public partial class Doctor
     public virtual ICollection<NotaEvolucion> NotaEvolucions { get; set; } = new List<NotaEvolucion>();
 
     public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();
+    */
 }
