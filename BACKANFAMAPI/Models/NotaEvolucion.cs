@@ -32,8 +32,9 @@ public partial class NotaEvolucion
     public string NumExpediente { get; set; } = null!;
 
     public string CodDoctor { get; set; } = null!;
-
+    /*
     public virtual Doctor CodDoctorNavigation { get; set; } = null!;
 
     public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
+    */
 }

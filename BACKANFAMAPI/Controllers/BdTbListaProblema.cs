@@ -19,7 +19,7 @@ namespace BACKANFAMAPI.Controllers
         }
 
         //Metodo para verficar si el usuario existe
-        private bool bdtdoctorExists(int id)
+        private bool listaproblemaExists(int id)
         {
             return _context.ListaProblemas.Any(e => e.CodProblemas == id);
         }
@@ -44,6 +44,46 @@ namespace BACKANFAMAPI.Controllers
             _context.ListaProblemas.Remove(elemento);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        //Metodo para actualizar los datos en la api
+        [HttpPut("actualizar/{CodProblemas}")]
+        public async Task<IActionResult> Putpaciente(int CodProblemas, ListaProblema listaProblema)
+        {
+            if (CodProblemas != listaProblema.CodProblemas)
+            {
+                return BadRequest();
+            }
+            _context.Entry(listaProblema).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!listaproblemaExists(CodProblemas))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+            return NoContent();
+        }
+
+
+        //Metodo post en la api
+        [HttpPost("post")]
+        public async Task<ActionResult<Informacion>> PostListaProblema(ListaProblema listaProblema)
+        {
+            _context.ListaProblemas.Add(listaProblema);
+            await _context.SaveChangesAsync();
+            return Ok(listaProblema);
+            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
     }
 }
