@@ -1,6 +1,7 @@
 ﻿using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -76,9 +77,12 @@ namespace BACKANFAMAPI.Controllers
 
 
         //Metodo post en la api
+        
         [HttpPost("post")]
+
         public async Task<ActionResult<Referencia>> PostReferencia(Referencia referencia)
         {
+
             _context.Referencias.Add(referencia);
             await _context.SaveChangesAsync();
             return Ok(referencia);

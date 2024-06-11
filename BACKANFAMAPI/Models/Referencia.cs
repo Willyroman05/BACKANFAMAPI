@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BACKANFAMAPI.Models;
 
@@ -8,9 +9,11 @@ public partial class Referencia
     public int CodReferencias { get; set; }
 
     public string InfoAtencion { get; set; } = null!;
+    
 
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Fecha { get; set; }
-
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly FechaEgreso { get; set; }
 
     public string Diagnostico { get; set; } = null!;
