@@ -17,5 +17,5 @@ public partial class Usuario
 
     public int CodRol { get; set; }
 
-    public virtual Rol CodRolNavigation { get; set; } = null!;
+   // public virtual Rol CodRolNavigation { get; set; } = null!;
 }

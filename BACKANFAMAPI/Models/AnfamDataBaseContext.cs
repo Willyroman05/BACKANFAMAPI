@@ -643,10 +643,10 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NOMBRE");
 
-            entity.HasOne(d => d.CodRolNavigation).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.CodRol)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ROL");
+            //entity.HasOne(d => d.CodRolNavigation).WithMany()
+             //   .HasForeignKey(d => d.CodRol)
+             //   .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_ROL");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -47,6 +47,45 @@ namespace BACKANFAMAPI.Controllers
             return NoContent();
         }
 
+        //Metodo para actualizar los datos en la api
+        [HttpPut("actualizar/{NumExpediente}")]
+        public async Task<IActionResult> Putpaciente(string NumExpediente, Paciente paciente)
+        {
+            if (NumExpediente != paciente.NumExpediente)
+            {
+                return BadRequest();
+            }
+            _context.Entry(paciente).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!pacienteExists(NumExpediente))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+            return NoContent();
+        }
+
+
+        //Metodo post en la api
+        [HttpPost("post")]
+        public async Task<ActionResult<Paciente>> PostRol(Paciente paciente)
+        {
+            _context.Pacientes.Add(paciente);
+            await _context.SaveChangesAsync();
+            return Ok(paciente);
+            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+        }
 
     }
 }

@@ -36,8 +36,8 @@ namespace BACKANFAMAPI.Controllers
         {
             _context.Rols.Add(rol);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+            return Ok(rol);
+            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
         [HttpDelete("eliminar/{CodRol}")]

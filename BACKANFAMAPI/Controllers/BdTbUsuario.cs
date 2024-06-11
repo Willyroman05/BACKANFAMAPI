@@ -1,4 +1,5 @@
-﻿using BACKANFAMAPI.Models;
+﻿using BACKANFAMAPI.Modelos;
+using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -99,7 +100,24 @@ namespace BACKANFAMAPI.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.CodAdmin }, usuario);
         }
 
-      
+        [HttpPost("login")]
+        public async Task<ActionResult> Login(LoginModel login)
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Correo == login.Correo);
+
+            if (usuario == null)
+            {
+                return Unauthorized(new { message = "Correo electrónico no válido" });
+            }
+
+            if (usuario.Contraseña != login.Contraseña)
+            {
+                return Unauthorized(new { message = "Contraseña Incorrecta" });
+            }
+
+            return Ok(usuario);
+        }
 
     }
 }
