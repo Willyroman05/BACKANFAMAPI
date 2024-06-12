@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BACKANFAMAPI.Models;
 
@@ -24,7 +25,7 @@ public partial class AntecedentesPersonale
     public int? Abortos { get; set; }
 
     public int? Cesarea { get; set; }
-
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Fum { get; set; }
 
     public int? Sa { get; set; }

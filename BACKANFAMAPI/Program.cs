@@ -28,15 +28,12 @@ builder.Services.AddDbContext<AnfamDataBaseContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("coneccion"));
 });
 
-//fecha
+//---------------------------------------------fecha
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
     options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
 });
-
-
-
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

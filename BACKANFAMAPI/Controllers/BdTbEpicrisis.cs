@@ -87,6 +87,26 @@ namespace BACKANFAMAPI.Controllers
             return Ok(epicrisis);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
+
+
+        //Metodo para listar los datos en la api por CodDoctor
+        [HttpGet("buscarporcoddoctor")]
+        public async Task<ActionResult<Epicrisis>> GetCodDoctor([FromQuery] string CodDoctor)
+        {
+            if (string.IsNullOrEmpty(CodDoctor))
+            {
+                return BadRequest("El codigo doctor es requerida.");
+            }
+
+            var doctor = await _context.Epicrises.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+
+            if (doctor == null)
+            {
+                return NotFound("Epicrises no encontrado.");
+            }
+
+            return Ok(doctor);
+        }
     }
 
 }
