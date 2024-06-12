@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BACKANFAMAPI.Models;
 
@@ -16,7 +17,7 @@ public partial class Paciente
     public string? SegundoApellido { get; set; }
 
     public string? Cedula { get; set; }
-
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly FechaNac { get; set; }
 
     public int Edad { get; set; }
@@ -40,7 +41,7 @@ public partial class Paciente
     public double Talla { get; set; }
 
     public double? Imc { get; set; }
-
+    [JsonConverter(typeof(DateOnlyJsonConverter))] 
     public DateOnly FechaIngreso { get; set; }
 
     public string Centro { get; set; } = null!;

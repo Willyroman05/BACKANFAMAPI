@@ -51,6 +51,14 @@ namespace BACKANFAMAPI.Controllers
         [HttpPut("actualizar/{NumExpediente}")]
         public async Task<IActionResult> Putpaciente(string NumExpediente, Paciente paciente)
         {
+            if (paciente.Talla > 0) // Evitar división por cero
+            {
+                paciente.Imc = paciente.Peso / (paciente.Talla * paciente.Talla);
+            }
+            else
+            {
+                paciente.Imc = null; // Asignar null si Talla es 0 o menor
+            }
             if (NumExpediente != paciente.NumExpediente)
             {
                 return BadRequest();
@@ -81,10 +89,93 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Paciente>> PostRol(Paciente paciente)
         {
+            if (paciente.Talla > 0) // Evitar división por cero
+            {
+                paciente.Imc = paciente.Peso / (paciente.Talla * paciente.Talla);
+            }
+            else
+            {
+                paciente.Imc = null; // Asignar null si Talla es 0 o menor
+            }
             _context.Pacientes.Add(paciente);
             await _context.SaveChangesAsync();
             return Ok(paciente);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+            
+        }
+
+        //Metodo para listar los datos en la api por numeroexpediente
+      
+        [HttpGet("buscarpornumexpediente")]
+        public async Task<ActionResult<Paciente>> GetPacientenumexpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var paciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (paciente == null)
+            {
+                return NotFound("Paciente no encontrado.");
+            }
+
+            return Ok(paciente);
+        }
+
+        //Metodo para listar los datos en la api por cedula
+        [HttpGet("buscarporcedula")]
+        public async Task<ActionResult<Paciente>> GetPacientePorCedula([FromQuery] string cedula)
+        {
+            if (string.IsNullOrEmpty(cedula))
+            {
+                return BadRequest("La cédula es requerida.");
+            }
+
+            var paciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.Cedula == cedula);
+
+            if (paciente == null)
+            {
+                return NotFound("Paciente no encontrado.");
+            }
+
+            return Ok(paciente);
+        }
+
+        [HttpGet("buscarpornombre")]
+        public async Task<ActionResult<IEnumerable<Paciente>>> GetPacientesPorNombre(
+            [FromQuery] string primerNombre,
+            [FromQuery] string? segundoNombre,
+            [FromQuery] string primerApellido,
+            [FromQuery] string? segundoApellido)
+        {
+            if (string.IsNullOrEmpty(primerNombre) || string.IsNullOrEmpty(primerApellido))
+            {
+                return BadRequest("PrimerNombre y PrimerApellido son requeridos.");
+            }
+
+            var query = _context.Pacientes.AsQueryable();
+
+            query = query.Where(p => p.PrimerNombre == primerNombre && p.PrimerApellido == primerApellido);
+
+            if (!string.IsNullOrEmpty(segundoNombre))
+            {
+                query = query.Where(p => p.SegundoNombre == segundoNombre);
+            }
+
+            if (!string.IsNullOrEmpty(segundoApellido))
+            {
+                query = query.Where(p => p.SegundoApellido == segundoApellido);
+            }
+
+            var pacientes = await query.ToListAsync();
+
+            if (!pacientes.Any())
+            {
+                return NotFound("No se encontraron pacientes con los criterios proporcionados.");
+            }
+
+            return Ok(pacientes);
         }
 
     }

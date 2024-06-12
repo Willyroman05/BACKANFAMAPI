@@ -6,6 +6,8 @@ namespace BACKANFAMAPI.Models;
 
 public partial class AnfamDataBaseContext : DbContext
 {
+    internal object paciente;
+
     public AnfamDataBaseContext()
     {
     }

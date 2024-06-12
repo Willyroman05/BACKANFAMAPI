@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BACKANFAMAPI.Models;
 
@@ -9,6 +10,7 @@ public partial class ListaProblema
 
     public int NumeroNota { get; set; }
 
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly Fecha { get; set; }
 
     public string NombreProblema { get; set; } = null!;

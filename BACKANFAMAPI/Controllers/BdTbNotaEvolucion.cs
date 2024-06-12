@@ -49,6 +49,14 @@ namespace BACKANFAMAPI.Controllers
         [HttpPut("actualizar/{CodNota}")]
         public async Task<IActionResult> Putpaciente(int CodNota, NotaEvolucion notaEvolucion)
         {
+            if (notaEvolucion.Talla > 0) // Evitar división por cero
+            {
+                notaEvolucion.Imc = notaEvolucion.PESO / (notaEvolucion.Talla * notaEvolucion.Talla);
+            }
+            else
+            {
+                notaEvolucion.Imc = 0; // Asignar null si Talla es 0 o menor
+            }
             if (CodNota != notaEvolucion.CodNota)
             {
                 return BadRequest();
@@ -79,6 +87,14 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostNotaEvolucion(NotaEvolucion notaEvolucion)
         {
+            if (notaEvolucion.Talla > 0) // Evitar división por cero
+            {
+                notaEvolucion.Imc = notaEvolucion.PESO / (notaEvolucion.Talla * notaEvolucion.Talla);
+            }
+            else
+            {
+                notaEvolucion.Imc = 0; // Asignar null si Talla es 0 o menor
+            }
             _context.NotaEvolucions.Add(notaEvolucion);
             await _context.SaveChangesAsync();
             return Ok(notaEvolucion);

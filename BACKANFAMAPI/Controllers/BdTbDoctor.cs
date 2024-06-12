@@ -83,5 +83,70 @@ namespace BACKANFAMAPI.Controllers
             return Ok(doctor);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
+
+
+
+        //Metodo para bucar por nombre
+        [HttpGet("buscarpornombre")]
+        public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctorPorNombre(
+           [FromQuery] string PrimerNombre,
+           [FromQuery] string? SegundoNombre,
+           [FromQuery] string PrimerApellido,
+           [FromQuery] string? SegundoApellido)
+        {
+            if (string.IsNullOrEmpty(PrimerNombre) || string.IsNullOrEmpty(PrimerApellido))
+            {
+                return BadRequest("PrimerNombre y PrimerApellido son requeridos.");
+            }
+
+            var query = _context.Doctors.AsQueryable();
+
+            query = query.Where(p => p.PrimerNombre == PrimerNombre && p.PrimerApellido == PrimerApellido);
+
+            if (!string.IsNullOrEmpty(SegundoNombre))
+            {
+                query = query.Where(p => p.SegundoNombre == SegundoNombre);
+            }
+
+            if (!string.IsNullOrEmpty(SegundoApellido))
+            {
+                query = query.Where(p => p.SegundoApellido == SegundoApellido);
+            }
+
+            var doctors = await query.ToListAsync();
+
+            if (!doctors.Any())
+            {
+                return NotFound("No se encontraron Doctores con los criterios proporcionados.");
+            }
+
+            return Ok(doctors);
+        }
+        //Metodo para listar los datos en la api por CodDoctor
+        [HttpGet("buscarporcoddoctor")]
+        public async Task<ActionResult<Paciente>> GetCodDoctor([FromQuery] string CodDoctor)
+        {
+            if (string.IsNullOrEmpty(CodDoctor))
+            {
+                return BadRequest("El codigo doctor es requerid0.");
+            }
+
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+
+            if (doctor == null)
+            {
+                return NotFound("Doctor no encontrado.");
+            }
+
+            return Ok(doctor);
+        }
+
+
+
+
+
     }
+
+
+   
 }
