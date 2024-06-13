@@ -48,6 +48,7 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<Rol> Rols { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+   
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -116,6 +117,18 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEXP_FAM");*/
+
+              modelBuilder.Entity<Paciente>()
+             .Ignore(p => p.CodDepartamentoNavigation);  // Ignorar esta propiedad para el mapeo de la tabla
+
+            // Configurar la relación entre Paciente y Departamento
+            modelBuilder.Entity<Paciente>()
+                .HasOne(p => p.CodDepartamentoNavigation)
+                .WithMany(d => d.Pacientes)
+                .HasForeignKey(p => p.CodDepartamento);
+
+
+
         });
 
         modelBuilder.Entity<AntecedentePatPer>(entity =>
@@ -561,10 +574,10 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("USUARIA");
 
-           /* entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
+           entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.CodDepartamento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DEP");*/
+                .HasConstraintName("FK_DEP");
         });
 
         modelBuilder.Entity<Referencia>(entity =>

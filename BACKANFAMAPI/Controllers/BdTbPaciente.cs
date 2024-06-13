@@ -32,6 +32,9 @@ namespace BACKANFAMAPI.Controllers
             return await _context.Pacientes.ToListAsync();
         }
 
+
+
+
         //Metodo para Eliminar los datos en la api
         [HttpDelete("eliminar/{NumExpediente}")]
         public async Task<IActionResult> Delete(string NumExpediente)
@@ -178,5 +181,45 @@ namespace BACKANFAMAPI.Controllers
             return Ok(pacientes);
         }
 
+
+        [HttpGet]
+        [Route("listarmasdepartamento")]
+        public async Task<ActionResult<IEnumerable<PacienteDto>>> GetPacientesWithDepartamento()
+        {
+            var pacientesWithDepartamento = await _context.Pacientes
+                .Include(p => p.CodDepartamentoNavigation)
+                .Select(p => new PacienteDto
+                {
+                    NumExpediente = p.NumExpediente,
+                    PrimerNombre = p.PrimerNombre,
+                    SegundoNombre = p.SegundoNombre,
+                    PrimerApellido = p.PrimerApellido,
+                    SegundoApellido = p.SegundoApellido,
+                    Cedula = p.Cedula,
+                    FechaNac = p.FechaNac,
+                    Edad = p.Edad,
+                    Escolaridad = p.Escolaridad,
+                    Profesion = p.Profesion,
+                    Sexo = p.Sexo,
+                    Direccion = p.Direccion,
+                    CodDepartamento = p.CodDepartamento,
+                    NombreDepartamento = p.CodDepartamentoNavigation.Nombre,  // Nombre del Departamento
+                    Presion = p.Presion,
+                    Temperatura = p.Temperatura,
+                    Peso = p.Peso,
+                    Talla = p.Talla,
+                    Imc = p.Imc,
+                    FechaIngreso = p.FechaIngreso,
+                    Centro = p.Centro,
+                    Usuaria = p.Usuaria
+                })
+                .ToListAsync();
+
+            return Ok(pacientesWithDepartamento);
+        }
+
     }
+
+
 }
+
