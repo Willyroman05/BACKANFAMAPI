@@ -2,6 +2,7 @@
 using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -98,14 +99,53 @@ namespace BACKANFAMAPI.Controllers
                 return BadRequest("El codigo doctor es requerida.");
             }
 
-            var doctor = await _context.Epicrises.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+            var epicrisis = await _context.Epicrises.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
 
-            if (doctor == null)
+            if (epicrisis == null)
             {
                 return NotFound("Epicrises no encontrado.");
             }
 
-            return Ok(doctor);
+            return Ok(epicrisis);
+        }
+
+
+        //Metodo para listar los datos en la api por numeroexpediente
+        [HttpGet("buscarpornumexpediente")]
+        public async Task<ActionResult<Epicrisis>> GetNumExpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var epicrisis = await _context.Epicrises.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (epicrisis == null)
+            {
+                return NotFound("Numero de expediente no encontrado.");
+            }
+
+            return Ok(epicrisis);
+        }
+
+        //Metodo para listar los datos en la api por CodEpicrisis
+        [HttpGet("buscarporcodEpicrisis")]
+        public async Task<ActionResult<Epicrisis>> GetCodEpicrisis([FromQuery] int CodEpicrisis)
+        {
+            if ((CodEpicrisis <= 0))
+            {
+                return BadRequest("El codigo epocrisis es requerida.");
+            }
+
+            var epicrisis = await _context.Epicrises.FirstOrDefaultAsync(p => p.CodEpicrisis == CodEpicrisis);
+
+            if (epicrisis == null)
+            {
+                return NotFound("El codigo epocrisis no encontrado.");
+            }
+
+            return Ok(epicrisis);
         }
     }
 
