@@ -83,6 +83,47 @@ namespace BACKANFAMAPI.Controllers
             return Ok(antecedentePatFam);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
+
+
+        //Metodo para listar los datos en la api por expediente
+        [HttpGet("buscarporexpediente")]
+        public async Task<ActionResult<AntecedentePatFam>> Getbuscarporexpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var AntecedentePatFam = await _context.AntecedentePatFams.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (AntecedentePatFam == null)
+            {
+                return NotFound("Antecendete patologico Familiares no encontrado.");
+            }
+
+            return Ok(AntecedentePatFam);
+
+        }
+
+        //Metodo para listar los datos en la api por codigo
+        [HttpGet("buscarporcodigo")]
+        public async Task<ActionResult<AntecedentePatFam>> GetCodigo([FromQuery] int CodAntpatfam)
+        {
+            if (CodAntpatfam <= 0)
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var AntecedentePatFam = await _context.AntecedentePatFams.FirstOrDefaultAsync(p => p.CodAntpatfam == CodAntpatfam);
+
+            if (AntecedentePatFam == null)
+            {
+                return NotFound("Antecendete patologico Familiares no encontrado.");
+            }
+
+            return Ok(AntecedentePatFam);
+
+        }
     }
 
 }

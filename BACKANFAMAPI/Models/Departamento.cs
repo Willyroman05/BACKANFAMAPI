@@ -10,10 +10,10 @@ public partial class Departamento
 
     public string Nombre { get; set; } = null!;
 
-
-
-    [JsonIgnore]
-    public virtual ICollection<Paciente> Pacientes { get; set; } = new List<Paciente>();
     /*
+
+ //   [JsonIgnore]
+    public virtual ICollection<Paciente> Pacientes { get; set; } = new List<Paciente>();
+    
     public virtual ICollection<Referencia> Referencia { get; set; } = new List<Referencia>();*/
 }

@@ -83,5 +83,48 @@ namespace BACKANFAMAPI.Controllers
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
+
+
+
+
+        //Metodo para listar los datos en la api por expediente
+        [HttpGet("buscarporexpediente")]
+        public async Task<ActionResult<AntecedentesPersonale>> Getbuscarporexpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var AntecedentesPersonale = await _context.AntecedentesPersonales.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (AntecedentesPersonale == null)
+            {
+                return NotFound("Antecendete personal no encontrado.");
+            }
+
+            return Ok(AntecedentesPersonale);
+
+        }
+
+        //Metodo para listar los datos en la api por codigo
+        [HttpGet("buscarporcodigo")]
+        public async Task<ActionResult<AntecedentesPersonale>> GetCodigo([FromQuery] int CodAntper)
+        {
+            if ((CodAntper <= 0))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var AntecedentesPersonale = await _context.AntecedentesPersonales.FirstOrDefaultAsync(p => p.CodAntper == CodAntper);
+
+            if (AntecedentesPersonale == null)
+            {
+                return NotFound("Antecendete personal no encontrado.");
+            }
+
+            return Ok(AntecedentesPersonale);
+
+        }
     }
 }

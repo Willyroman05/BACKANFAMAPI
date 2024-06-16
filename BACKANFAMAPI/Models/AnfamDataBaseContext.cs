@@ -118,6 +118,9 @@ public partial class AnfamDataBaseContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEXP_FAM");*/
 
+
+
+            /*
               modelBuilder.Entity<Paciente>()
              .Ignore(p => p.CodDepartamentoNavigation);  // Ignorar esta propiedad para el mapeo de la tabla
 
@@ -126,7 +129,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasOne(p => p.CodDepartamentoNavigation)
                 .WithMany(d => d.Pacientes)
                 .HasForeignKey(p => p.CodDepartamento);
-
+            */
 
 
         });
@@ -573,11 +576,11 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("USUARIA");
-
+            /*
            entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.CodDepartamento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DEP");
+                .HasConstraintName("FK_DEP");*/
         });
 
         modelBuilder.Entity<Referencia>(entity =>

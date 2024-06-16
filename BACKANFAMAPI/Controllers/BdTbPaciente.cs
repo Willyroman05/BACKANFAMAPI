@@ -180,7 +180,7 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(pacientes);
         }
-
+        /*
 
         [HttpGet]
         [Route("listarmasdepartamento")]
@@ -217,6 +217,7 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(pacientesWithDepartamento);
         }
+        */
 
     }
 

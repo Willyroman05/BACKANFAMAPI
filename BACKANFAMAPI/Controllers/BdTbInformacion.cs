@@ -1,6 +1,7 @@
 ﻿using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -82,6 +83,46 @@ namespace BACKANFAMAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(informacion);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+        }
+
+        //Metodo para listar los datos en la api por expediente
+        [HttpGet("buscarporexpediente")]
+        public async Task<ActionResult<Informacion>> Getbuscarporexpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var Informacion = await _context.Informacions.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (Informacion == null)
+            {
+                return NotFound("Informacion no encontrado.");
+            }
+
+            return Ok(Informacion);
+
+        }
+
+        //Metodo para listar los datos en la api por codigo
+        [HttpGet("buscarporcodigo")]
+        public async Task<ActionResult<Informacion>> GetCodigo([FromQuery] int CodInfo)
+        {
+            if (CodInfo <= 0)
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var Informacion = await _context.Informacions.FirstOrDefaultAsync(p => p.CodInfo == CodInfo);
+
+            if (Informacion == null)
+            {
+                return NotFound("Informacion no encontrado.");
+            }
+
+            return Ok(Informacion);
+
         }
     }
 }

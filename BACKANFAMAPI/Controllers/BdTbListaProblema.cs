@@ -70,9 +70,10 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
-            return NoContent();
+
+            // Retorna los datos actualizados
+            return Ok(listaProblema);
         }
 
 

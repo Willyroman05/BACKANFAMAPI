@@ -144,7 +144,7 @@ namespace BACKANFAMAPI.Controllers
         [HttpGet("buscarporcodNotaEvolucions")]
         public async Task<ActionResult<Epicrisis>> GetcodNotaEvolucions([FromQuery] int CodNota)
         {
-            if ((CodNota <= 0))
+            if (CodNota <= 0)
             {
                 return BadRequest("El codigo epocrisis es requerida.");
             }

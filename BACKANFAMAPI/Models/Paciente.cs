@@ -47,10 +47,10 @@ public partial class Paciente
     public string Centro { get; set; } = null!;
 
     public string Usuaria { get; set; } = null!;
-
-    [JsonIgnore]
-    public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
     /*
+  //  [JsonIgnore]
+    public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
+    
 
     public virtual ICollection<AntecedentePatFam> AntecedentePatFams { get; set; } = new List<AntecedentePatFam>();
     
