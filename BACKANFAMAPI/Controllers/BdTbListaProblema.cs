@@ -91,6 +91,7 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
+
         public async Task<ActionResult<ListaProblema>> GetNumExpediente([FromQuery] string NumExpediente)
         {
             if (string.IsNullOrEmpty(NumExpediente))
@@ -98,7 +99,7 @@ namespace BACKANFAMAPI.Controllers
                 return BadRequest("El Numero de expediente es requerida.");
             }
 
-            var ListaProblema = await _context.ListaProblemas.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+            var ListaProblema = await _context.ListaProblemas.Where(p => p.NumExpediente == NumExpediente).ToListAsync();
 
             if (ListaProblema == null)
             {
@@ -107,7 +108,6 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(ListaProblema);
         }
-
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodigoproblemas")]
         public async Task<ActionResult<ListaProblema>> Getcodigoproblemas([FromQuery] int CodProblemas)
