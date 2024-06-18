@@ -4,12 +4,10 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using BACKANFAMAPI.Controllers;
 using System.ComponentModel;
+using BACKANFAMAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
 
 
 //--------------------------------------------------- Configurar Cors
@@ -34,6 +32,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
     options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
 });
+
+
+
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -48,6 +48,7 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<Rol> Rols { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+   
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -116,6 +117,21 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasForeignKey(d => d.NumExpediente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NUMEXP_FAM");*/
+
+
+
+            /*
+              modelBuilder.Entity<Paciente>()
+             .Ignore(p => p.CodDepartamentoNavigation);  // Ignorar esta propiedad para el mapeo de la tabla
+
+            // Configurar la relación entre Paciente y Departamento
+            modelBuilder.Entity<Paciente>()
+                .HasOne(p => p.CodDepartamentoNavigation)
+                .WithMany(d => d.Pacientes)
+                .HasForeignKey(p => p.CodDepartamento);
+            */
+
+
         });
 
         modelBuilder.Entity<AntecedentePatPer>(entity =>
@@ -248,11 +264,8 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("COD_DOCTOR");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("CORREO");
-            entity.Property(e => e.Edad).HasColumnName("EDAD");
+            
+            
             entity.Property(e => e.PrimerApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -269,14 +282,16 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("SEGUNDO_NOMBRE");
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("TELEFONO");
-            entity.Property(e => e.Telefono2)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("TELEFONO2");
+
+            entity.Property(e => e.CEDULA)
+               .HasMaxLength(20)
+               .IsUnicode(false)
+               .HasColumnName("CEDULA");
+            entity.Property(e => e.CLINICA)
+               .HasMaxLength(50)
+               .IsUnicode(false)
+               .HasColumnName("CLINICA");
+
         });
 
         modelBuilder.Entity<EmbarazoActual>(entity =>
@@ -435,7 +450,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NOMBRE_PROBLEMA");
             entity.Property(e => e.NumExpediente)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
             entity.Property(e => e.NumeroNota).HasColumnName("NUMERO_NOTA");
@@ -560,8 +575,8 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("USUARIA");
-
-           /* entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
+            /*
+           entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.CodDepartamento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DEP");*/
@@ -655,6 +670,11 @@ public partial class AnfamDataBaseContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    internal async Task GetPacientesAsync()
+    {
+        throw new NotImplementedException();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

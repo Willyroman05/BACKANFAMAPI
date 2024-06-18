@@ -41,16 +41,19 @@ public partial class Paciente
     public double Talla { get; set; }
 
     public double? Imc { get; set; }
-    [JsonConverter(typeof(DateOnlyJsonConverter))] 
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly FechaIngreso { get; set; }
 
     public string Centro { get; set; } = null!;
 
     public string Usuaria { get; set; } = null!;
-    /* public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
+    /*
+  //  [JsonIgnore]
+    public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
+    
 
-      public virtual ICollection<AntecedentePatFam> AntecedentePatFams { get; set; } = new List<AntecedentePatFam>();
-
+    public virtual ICollection<AntecedentePatFam> AntecedentePatFams { get; set; } = new List<AntecedentePatFam>();
+    
       public virtual ICollection<AntecedentePatPer> AntecedentePatPers { get; set; } = new List<AntecedentePatPer>();
 
       public virtual ICollection<AntecedentesObstetrico> AntecedentesObstetricos { get; set; } = new List<AntecedentesObstetrico>();

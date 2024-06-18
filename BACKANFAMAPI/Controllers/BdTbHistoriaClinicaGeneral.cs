@@ -84,5 +84,63 @@ namespace BACKANFAMAPI.Controllers
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
+        //Metodo para listar los datos en la api por CodDoctor
+        [HttpGet("buscarporcoddoctor")]
+        public async Task<ActionResult<HistoriaClinicaGeneral>> GetCodDoctor([FromQuery] string CodDoctor)
+        {
+            if (string.IsNullOrEmpty(CodDoctor))
+            {
+                return BadRequest("El codigo doctor es requerida.");
+            }
+
+            var HistoriaClinicaGeneral = await _context.HistoriaClinicaGenerals.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+
+            if (HistoriaClinicaGeneral == null)
+            {
+                return NotFound("HistoriaClinicaGeneral no encontrado.");
+            }
+
+            return Ok(HistoriaClinicaGeneral);
+        }
+
+
+        //Metodo para listar los datos en la api por numeroexpediente
+        [HttpGet("buscarpornumexpediente")]
+        public async Task<ActionResult<HistoriaClinicaGeneral>> GetNumExpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var historiaClinicaGeneral = await _context.HistoriaClinicaGenerals.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (historiaClinicaGeneral == null)
+            {
+                return NotFound("Numero de expediente no encontrado.");
+            }
+
+            return Ok(historiaClinicaGeneral);
+        }
+
+        //Metodo para listar los datos en la api por CodEpicrisis
+        [HttpGet("buscarporcodhistoriaclinica")]
+        public async Task<ActionResult<Epicrisis>> Getcodhistoriaclinica([FromQuery] int CodHistoriaClinica)
+        {
+            if ((CodHistoriaClinica <= 0))
+            {
+                return BadRequest("El codigo epocrisis es requerida.");
+            }
+
+            var HistoriaClinicaGenerals = await _context.HistoriaClinicaGenerals.FirstOrDefaultAsync(p => p.CodHistoriaClinica == CodHistoriaClinica);
+
+            if (HistoriaClinicaGenerals == null)
+            {
+                return NotFound("El codigo HistoriaClinicaGeneral no encontrado.");
+            }
+
+            return Ok(HistoriaClinicaGenerals);
+        }
+
     }
 }

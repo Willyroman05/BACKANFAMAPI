@@ -15,13 +15,12 @@ public partial class Doctor
 
     public string? SegundoApellido { get; set; }
 
-    public int Edad { get; set; }
+    public string?  CEDULA { get; set; }
 
-    public string? Correo { get; set; }
 
-    public string? Telefono { get; set; }
+    public string? CLINICA { get; set; }
 
-    public string? Telefono2 { get; set; }
+   
     /*
     public virtual ICollection<Epicrisis> Epicrises { get; set; } = new List<Epicrisis>();
 

@@ -101,5 +101,63 @@ namespace BACKANFAMAPI.Controllers
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
+        //Metodo para listar los datos en la api por CodDoctor
+        [HttpGet("buscarporcoddoctor")]
+        public async Task<ActionResult<NotaEvolucion>> GetCodDoctor([FromQuery] string CodDoctor)
+        {
+            if (string.IsNullOrEmpty(CodDoctor))
+            {
+                return BadRequest("El codigo doctor es requerida.");
+            }
+
+            var NotaEvolucion = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+
+            if (NotaEvolucion == null)
+            {
+                return NotFound("NotaEvolucion no encontrado.");
+            }
+
+            return Ok(NotaEvolucion);
+        }
+
+
+        //Metodo para listar los datos en la api por numeroexpediente
+        [HttpGet("buscarpornumexpediente")]
+        public async Task<ActionResult<NotaEvolucion>> GetNumExpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var NotaEvolucions = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (NotaEvolucions == null)
+            {
+                return NotFound("Numero de expediente no encontrado.");
+            }
+
+            return Ok(NotaEvolucions);
+        }
+
+        //Metodo para listar los datos en la api por CodEpicrisis
+        [HttpGet("buscarporcodNotaEvolucions")]
+        public async Task<ActionResult<Epicrisis>> GetcodNotaEvolucions([FromQuery] int CodNota)
+        {
+            if (CodNota <= 0)
+            {
+                return BadRequest("El codigo epocrisis es requerida.");
+            }
+
+            var NotaEvolucions = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.CodNota == CodNota);
+
+            if (NotaEvolucions == null)
+            {
+                return NotFound("El codigo NotaEvolucion no encontrado.");
+            }
+
+            return Ok(NotaEvolucions);
+        }
+
     }
 }

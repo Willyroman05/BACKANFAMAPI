@@ -77,7 +77,7 @@ namespace BACKANFAMAPI.Controllers
 
 
         //Metodo post en la api
-        
+
         [HttpPost("post")]
 
         public async Task<ActionResult<Referencia>> PostReferencia(Referencia referencia)
@@ -87,6 +87,64 @@ namespace BACKANFAMAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(referencia);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
+        }
+
+        //Metodo para listar los datos en la api por CodDoctor
+        [HttpGet("buscarporcoddoctor")]
+        public async Task<ActionResult<Referencia>> GetCodDoctor([FromQuery] string CodDoctor)
+        {
+            if (string.IsNullOrEmpty(CodDoctor))
+            {
+                return BadRequest("El codigo doctor es requerida.");
+            }
+
+            var Referencia = await _context.Referencias.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+
+            if (Referencia == null)
+            {
+                return NotFound("Referencia no encontrado.");
+            }
+
+            return Ok(Referencia);
+        }
+
+
+        //Metodo para listar los datos en la api por numeroexpediente
+        [HttpGet("buscarpornumexpediente")]
+        public async Task<ActionResult<Referencia>> GetNumExpediente([FromQuery] string NumExpediente)
+        {
+            if (string.IsNullOrEmpty(NumExpediente))
+            {
+                return BadRequest("El Numero de expediente es requerida.");
+            }
+
+            var Referencia = await _context.Referencias.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+
+            if (Referencia == null)
+            {
+                return NotFound("Numero de expediente no encontrado.");
+            }
+
+            return Ok(Referencia);
+        }
+
+        //Metodo para listar los datos en la api por CodEpicrisis
+        [HttpGet("buscarporcodigoreferencias")]
+        public async Task<ActionResult<Referencia>> Getcodigoreferencias([FromQuery] int CodReferencias)
+        {
+            if ((CodReferencias <= 0))
+            {
+                return BadRequest("El codigo epocrisis es requerida.");
+            }
+
+            var Referencia = await _context.Referencias.FirstOrDefaultAsync(p => p.CodReferencias == CodReferencias);
+
+            if (Referencia == null)
+            {
+                return NotFound("El codigo Codigo Referencias no encontrado.");
+            }
+
+            return Ok(Referencia);
         }
     }
 }
