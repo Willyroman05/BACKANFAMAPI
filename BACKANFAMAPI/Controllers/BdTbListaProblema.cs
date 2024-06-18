@@ -98,23 +98,12 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-
-        public async Task<ActionResult<ListaProblema>> GetNumExpediente([FromQuery] string NumExpediente)
+        public async Task<ActionResult<IEnumerable<ListaProbleasNombrePaciente>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
-            if (string.IsNullOrEmpty(NumExpediente))
-            {
-                return BadRequest("El Numero de expediente es requerida.");
-            }
-
-            var ListaProblema = await _context.ListaProblemas.Where(p => p.NumExpediente == NumExpediente).ToListAsync();
-
-            if (ListaProblema == null)
-            {
-                return NotFound("Numero de expediente no encontrado.");
-            }
-
-            return Ok(ListaProblema);
+            var resultados = await _context.PBuscarPacienteNombre_ListaproblemaAsync(NUM_EXPEDIENTE);
+            return Ok(resultados);
         }
+
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodigoproblemas")]
         public async Task<ActionResult<ListaProblema>> Getcodigoproblemas([FromQuery] int CodProblemas)

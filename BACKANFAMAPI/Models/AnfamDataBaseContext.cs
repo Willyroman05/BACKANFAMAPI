@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BACKANFAMAPI.Models;
@@ -56,6 +57,13 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<EpicrisisNomPaciNomDoc> EpicrisisNomPaciNomDoc { get; set; }
 
     public virtual DbSet<NotaEvolucionNomPacNomDoc> NotaEvolucionNomPacNomDoc { get; set; }
+
+    public async Task<List<ListaProbleasNombrePaciente>> PBuscarPacienteNombre_ListaproblemaAsync(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.ListaProbleasNombrePaciente.FromSqlRaw("EXEC PBuscarPacienteNombre_Listaproblema @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
 
 
 
