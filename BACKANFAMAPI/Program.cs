@@ -4,12 +4,10 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using BACKANFAMAPI.Controllers;
 using System.ComponentModel;
+using BACKANFAMAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
 
 
 //--------------------------------------------------- Configurar Cors

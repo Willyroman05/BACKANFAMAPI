@@ -264,11 +264,8 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("COD_DOCTOR");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("CORREO");
-            entity.Property(e => e.Edad).HasColumnName("EDAD");
+            
+            
             entity.Property(e => e.PrimerApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -285,14 +282,16 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("SEGUNDO_NOMBRE");
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("TELEFONO");
-            entity.Property(e => e.Telefono2)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("TELEFONO2");
+
+            entity.Property(e => e.CEDULA)
+               .HasMaxLength(20)
+               .IsUnicode(false)
+               .HasColumnName("CEDULA");
+            entity.Property(e => e.CLINICA)
+               .HasMaxLength(50)
+               .IsUnicode(false)
+               .HasColumnName("CLINICA");
+
         });
 
         modelBuilder.Entity<EmbarazoActual>(entity =>
@@ -451,7 +450,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("NOMBRE_PROBLEMA");
             entity.Property(e => e.NumExpediente)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("NUM_EXPEDIENTE");
             entity.Property(e => e.NumeroNota).HasColumnName("NUMERO_NOTA");
@@ -671,6 +670,11 @@ public partial class AnfamDataBaseContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    internal async Task GetPacientesAsync()
+    {
+        throw new NotImplementedException();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -1,5 +1,7 @@
 ﻿using BACKANFAMAPI.Models;
+using BACKANFAMAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BACKANFAMAPI.Controllers
@@ -100,6 +102,7 @@ namespace BACKANFAMAPI.Controllers
             {
                 paciente.Imc = null; // Asignar null si Talla es 0 o menor
             }
+
             _context.Pacientes.Add(paciente);
             await _context.SaveChangesAsync();
             return Ok(paciente);
@@ -180,6 +183,9 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(pacientes);
         }
+        private readonly PacienteService _pacienteService;
+
+
         /*
 
         [HttpGet]
