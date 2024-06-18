@@ -78,13 +78,20 @@ namespace BACKANFAMAPI.Controllers
 
 
         //Metodo post en la api
+       
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostListaProblema(ListaProblema listaProblema)
         {
+            var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(e => e.NumExpediente == listaProblema.NumExpediente);
+
+            if (existingExpediente == null)
+            {
+                return BadRequest(new { message = "El Numero de Expediente proporcionado no existe." });
+            }
+
             _context.ListaProblemas.Add(listaProblema);
             await _context.SaveChangesAsync();
             return Ok(listaProblema);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
 
@@ -125,6 +132,18 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(ListaProblema);
+        }
+
+
+        [HttpGet("listarproblemanombrepaciente")]
+
+        public async Task<List<ListaProbleasNombrePaciente>> GetListaProbleasNombrePacienteAsync()
+        {
+            var ListaProbleasNombrePaciente = await _context.ListaProbleasNombrePaciente
+                .FromSqlRaw("EXEC PGetPacienteNombre_Listaproblema")
+                .ToListAsync();
+
+            return ListaProbleasNombrePaciente;
         }
     }
 }

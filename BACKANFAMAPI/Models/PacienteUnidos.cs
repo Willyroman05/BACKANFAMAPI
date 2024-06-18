@@ -157,7 +157,12 @@ namespace BACKANFAMAPI.Models
 
         public string? NOTA_MEDICA   { get; set; }
 
-       
+        //Departamento
+
+        
+        public string NOMBRE { get; set; } = null!;
+
+
 
 
 

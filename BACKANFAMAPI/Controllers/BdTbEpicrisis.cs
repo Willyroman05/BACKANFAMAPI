@@ -147,6 +147,17 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(epicrisis);
         }
+
+        [HttpGet("listarepicrisisnompacinomdoc")]
+
+        public async Task<List<EpicrisisNomPaciNomDoc>> GetEpicrisisNomPaciNomDocAsync()
+        {
+            var EpicrisisNomPaciNomDoc = await _context.EpicrisisNomPaciNomDoc
+                .FromSqlRaw("EXEC PGetPacienteNombre_EpiNombrePac_EpiNombreDoc")
+                .ToListAsync();
+
+            return EpicrisisNomPaciNomDoc;
+        }
     }
 
 }

@@ -50,7 +50,13 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<PacienteDepartamento> PacienteDepartamento { get; set; }
     public virtual DbSet<PacienteUnidos> PacienteUnidos { get; set; }
-    
+
+    public virtual DbSet<ListaProbleasNombrePaciente> ListaProbleasNombrePaciente { get; set; }
+
+    public virtual DbSet<EpicrisisNomPaciNomDoc> EpicrisisNomPaciNomDoc { get; set; }
+
+    public virtual DbSet<NotaEvolucionNomPacNomDoc> NotaEvolucionNomPacNomDoc { get; set; }
+
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -125,7 +131,9 @@ public partial class AnfamDataBaseContext : DbContext
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<PacienteDepartamento>().HasNoKey();
             modelBuilder.Entity<PacienteUnidos>().HasNoKey();
-            
+            modelBuilder.Entity<ListaProbleasNombrePaciente>().HasNoKey();
+            modelBuilder.Entity<EpicrisisNomPaciNomDoc>().HasNoKey();
+            modelBuilder.Entity<NotaEvolucionNomPacNomDoc   >().HasNoKey();
 
 
 
