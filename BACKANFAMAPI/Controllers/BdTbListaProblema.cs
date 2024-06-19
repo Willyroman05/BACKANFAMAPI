@@ -78,34 +78,30 @@ namespace BACKANFAMAPI.Controllers
 
 
         //Metodo post en la api
+       
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostListaProblema(ListaProblema listaProblema)
         {
+            var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(e => e.NumExpediente == listaProblema.NumExpediente);
+
+            if (existingExpediente == null)
+            {
+                return BadRequest(new { message = "El Numero de Expediente proporcionado no existe." });
+            }
+
             _context.ListaProblemas.Add(listaProblema);
             await _context.SaveChangesAsync();
             return Ok(listaProblema);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
 
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-        public async Task<ActionResult<ListaProblema>> GetNumExpediente([FromQuery] string NumExpediente)
+        public async Task<ActionResult<IEnumerable<ListaProbleasNombrePaciente>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
-            if (string.IsNullOrEmpty(NumExpediente))
-            {
-                return BadRequest("El Numero de expediente es requerida.");
-            }
-
-            var ListaProblema = await _context.ListaProblemas.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
-
-            if (ListaProblema == null)
-            {
-                return NotFound("Numero de expediente no encontrado.");
-            }
-
-            return Ok(ListaProblema);
+            var resultados = await _context.PBuscarPacienteNombre_ListaproblemaAsync(NUM_EXPEDIENTE);
+            return Ok(resultados);
         }
 
         //Metodo para listar los datos en la api por CodEpicrisis
@@ -125,6 +121,18 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(ListaProblema);
+        }
+
+
+        [HttpGet("listarproblemanombrepaciente")]
+
+        public async Task<List<ListaProbleasNombrePaciente>> GetListaProbleasNombrePacienteAsync()
+        {
+            var ListaProbleasNombrePaciente = await _context.ListaProbleasNombrePaciente
+                .FromSqlRaw("EXEC PGetPacienteNombre_Listaproblema")
+                .ToListAsync();
+
+            return ListaProbleasNombrePaciente;
         }
     }
 }

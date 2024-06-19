@@ -1,5 +1,5 @@
 ﻿using BACKANFAMAPI.Models;
-using BACKANFAMAPI.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -183,47 +183,30 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(pacientes);
         }
-        private readonly PacienteService _pacienteService;
 
+      
+        [HttpGet("Listarnombredepartamento")]
 
-        /*
-
-        [HttpGet]
-        [Route("listarmasdepartamento")]
-        public async Task<ActionResult<IEnumerable<PacienteDto>>> GetPacientesWithDepartamento()
+        public async Task<List<PacienteDepartamento>> GetPacienteDepartamentoAsync()
         {
-            var pacientesWithDepartamento = await _context.Pacientes
-                .Include(p => p.CodDepartamentoNavigation)
-                .Select(p => new PacienteDto
-                {
-                    NumExpediente = p.NumExpediente,
-                    PrimerNombre = p.PrimerNombre,
-                    SegundoNombre = p.SegundoNombre,
-                    PrimerApellido = p.PrimerApellido,
-                    SegundoApellido = p.SegundoApellido,
-                    Cedula = p.Cedula,
-                    FechaNac = p.FechaNac,
-                    Edad = p.Edad,
-                    Escolaridad = p.Escolaridad,
-                    Profesion = p.Profesion,
-                    Sexo = p.Sexo,
-                    Direccion = p.Direccion,
-                    CodDepartamento = p.CodDepartamento,
-                    NombreDepartamento = p.CodDepartamentoNavigation.Nombre,  // Nombre del Departamento
-                    Presion = p.Presion,
-                    Temperatura = p.Temperatura,
-                    Peso = p.Peso,
-                    Talla = p.Talla,
-                    Imc = p.Imc,
-                    FechaIngreso = p.FechaIngreso,
-                    Centro = p.Centro,
-                    Usuaria = p.Usuaria
-                })
+            var PacienteDepartamento = await _context.PacienteDepartamento
+                .FromSqlRaw("EXEC PGetPaciente_NombreDepartamento")
                 .ToListAsync();
 
-            return Ok(pacientesWithDepartamento);
+            return PacienteDepartamento;
         }
-        */
+
+        [HttpGet("Listarpacienteunidos")]
+
+        public async Task<List<PacienteUnidos>> GetPacienteUnidosoAsync()
+        {
+            var PacienteUnidos = await _context.PacienteUnidos
+                .FromSqlRaw("EXEC PGetPaciente_Unidos")
+                .ToListAsync();
+
+            return PacienteUnidos;
+        }
+
 
     }
 

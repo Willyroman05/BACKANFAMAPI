@@ -159,5 +159,16 @@ namespace BACKANFAMAPI.Controllers
             return Ok(NotaEvolucions);
         }
 
+        [HttpGet("listarnotanompacinomdoc")]
+
+        public async Task<List<NotaEvolucionNomPacNomDoc>> GetENotaEvolucionNomPacNomDoccAsync()
+        {
+            var NotaEvolucionNomPacNomDoc = await _context.NotaEvolucionNomPacNomDoc
+                .FromSqlRaw("EXEC PGetPacienteNombre_NotaNombrePac_NotaNombreDoc")
+                .ToListAsync();
+
+            return NotaEvolucionNomPacNomDoc;
+        }
+
     }
 }
