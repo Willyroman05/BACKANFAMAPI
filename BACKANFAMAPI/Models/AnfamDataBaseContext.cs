@@ -58,10 +58,48 @@ public partial class AnfamDataBaseContext : DbContext
 
     public virtual DbSet<NotaEvolucionNomPacNomDoc> NotaEvolucionNomPacNomDoc { get; set; }
 
+    public virtual DbSet<RefereciaNomPacNomDocNomDep> RefereciaNomPacNomDocNomDep { get; set; }
+
+    public virtual DbSet<HistoriaCliNomPacNomDoc> HistoriaCliNomPacNomDoc { get; set; }
+
+
     public async Task<List<ListaProbleasNombrePaciente>> PBuscarPacienteNombre_ListaproblemaAsync(string NUM_EXPEDIENTE)
     {
         var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
         var result = await this.ListaProbleasNombrePaciente.FromSqlRaw("EXEC PBuscarPacienteNombre_Listaproblema @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<EpicrisisNomPaciNomDoc>> PBuscarPacienteNombre_EpiNombrePac_EpiNombreDoc(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.EpicrisisNomPaciNomDoc.FromSqlRaw("EXEC PBuscarPacienteNombre_EpiNombrePac_EpiNombreDoc @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
+    public async Task<List<NotaEvolucionNomPacNomDoc>> PBuscarPacienteNombre_NotaNombrePac_NotaNombreDoc(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.NotaEvolucionNomPacNomDoc.FromSqlRaw("EXEC PBuscarPacienteNombre_NotaNombrePac_NotaNombreDoc @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<RefereciaNomPacNomDocNomDep>> PBuscarReferencia_NomPac_NomDoc_NomDep(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.RefereciaNomPacNomDocNomDep.FromSqlRaw("EXEC PBuscarReferencia_NomPac_NomDoc_NomDep @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<HistoriaCliNomPacNomDoc>> PBuscarHistoriaClin_NomPac_NomDoc(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.HistoriaCliNomPacNomDoc.FromSqlRaw("EXEC PBuscarHistoriaClin_NomPac_NomDoc @NUM_EXPEDIENTE", param).ToListAsync();
+        return result;
+    }
+    public async Task<List<PacienteUnidos>> PPaciente_Unidos(string NUM_EXPEDIENTE)
+    {
+        var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
+        var result = await this.PacienteUnidos.FromSqlRaw("EXEC PPaciente_Unidos @NUM_EXPEDIENTE", param).ToListAsync();
         return result;
     }
 
@@ -142,6 +180,8 @@ public partial class AnfamDataBaseContext : DbContext
             modelBuilder.Entity<ListaProbleasNombrePaciente>().HasNoKey();
             modelBuilder.Entity<EpicrisisNomPaciNomDoc>().HasNoKey();
             modelBuilder.Entity<NotaEvolucionNomPacNomDoc   >().HasNoKey();
+            modelBuilder.Entity<RefereciaNomPacNomDocNomDep>().HasNoKey();
+            modelBuilder.Entity<HistoriaCliNomPacNomDoc>().HasNoKey();
 
 
 

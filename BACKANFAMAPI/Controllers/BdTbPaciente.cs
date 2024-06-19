@@ -128,6 +128,25 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(paciente);
         }
+        //Metodo para listar los datos en la api por numeroexpediente
+
+        [HttpGet("buscarpornumexpedienteunidos")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Get([FromQuery] string NUM_EXPEDIENTE)
+        {
+
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
+            {
+                return BadRequest("El número de expediente es obligatorio.");
+            }
+
+            var resultados = await _context.PPaciente_Unidos(NUM_EXPEDIENTE);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
+            }
+            return Ok(resultados);
+        }
 
         //Metodo para listar los datos en la api por cedula
         [HttpGet("buscarporcedula")]

@@ -100,7 +100,18 @@ namespace BACKANFAMAPI.Controllers
         [HttpGet("buscarpornumexpediente")]
         public async Task<ActionResult<IEnumerable<ListaProbleasNombrePaciente>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
+
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
+            {
+                return BadRequest("El número de expediente es obligatorio.");
+            }
+
             var resultados = await _context.PBuscarPacienteNombre_ListaproblemaAsync(NUM_EXPEDIENTE);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
+            }
             return Ok(resultados);
         }
 

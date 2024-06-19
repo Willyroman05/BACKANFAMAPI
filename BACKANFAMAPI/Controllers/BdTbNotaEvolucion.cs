@@ -123,21 +123,25 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-        public async Task<ActionResult<NotaEvolucion>> GetNumExpediente([FromQuery] string NumExpediente)
+        public async Task<ActionResult<IEnumerable<NotaEvolucionNomPacNomDoc>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
-            if (string.IsNullOrEmpty(NumExpediente))
+
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
             {
-                return BadRequest("El Numero de expediente es requerida.");
+                return BadRequest("El número de expediente es obligatorio.");
             }
 
-            var NotaEvolucions = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+            // Llamada al método de base de datos
+            var resultados = await _context.PBuscarPacienteNombre_NotaNombrePac_NotaNombreDoc(NUM_EXPEDIENTE);
 
-            if (NotaEvolucions == null)
+            // Validar cuando no se encuentran resultados
+            if (resultados == null || !resultados.Any())
             {
-                return NotFound("Numero de expediente no encontrado.");
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
             }
 
-            return Ok(NotaEvolucions);
+            // Devolver los resultados encontrados
+            return Ok(resultados);
         }
 
         //Metodo para listar los datos en la api por CodEpicrisis
