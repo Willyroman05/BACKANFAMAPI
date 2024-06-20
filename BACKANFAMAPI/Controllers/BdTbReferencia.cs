@@ -88,7 +88,7 @@ namespace BACKANFAMAPI.Controllers
             return Ok(referencia);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
-
+        /*
         //Metodo para listar los datos en la api por CodDoctor
         [HttpGet("buscarporcoddoctor")]
         public async Task<ActionResult<Referencia>> GetCodDoctor([FromQuery] string CodDoctor)
@@ -107,27 +107,30 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(Referencia);
         }
+        */
 
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-        public async Task<ActionResult<Referencia>> GetNumExpediente([FromQuery] string NumExpediente)
-        {
-            if (string.IsNullOrEmpty(NumExpediente))
+        
+            public async Task<ActionResult<IEnumerable<RefereciaNomPacNomDocNomDep>>> Get([FromQuery] string NUM_EXPEDIENTE)
             {
-                return BadRequest("El Numero de expediente es requerida.");
+
+                if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
+                {
+                    return BadRequest("El número de expediente es obligatorio.");
+                }
+
+                var resultados = await _context.PBuscarReferencia_NomPac_NomDoc_NomDep(NUM_EXPEDIENTE);
+
+                if (resultados == null || !resultados.Any())
+                {
+                    return NotFound("No se encontraron registros para el número de expediente proporcionado.");
+                }
+                return Ok(resultados);
             }
 
-            var Referencia = await _context.Referencias.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
-
-            if (Referencia == null)
-            {
-                return NotFound("Numero de expediente no encontrado.");
-            }
-
-            return Ok(Referencia);
-        }
-
+        /*
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodigoreferencias")]
         public async Task<ActionResult<Referencia>> Getcodigoreferencias([FromQuery] int CodReferencias)
@@ -145,6 +148,27 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(Referencia);
+        }
+        */
+        [HttpGet("Buscarpormanombrepaciente")]
+
+        public async Task<ActionResult<IEnumerable<RefereciaNomPacNomDocNomDep>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
+        {
+
+
+            if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PBuscarReferencia_PacienteNombre(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
         }
     }
 }

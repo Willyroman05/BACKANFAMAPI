@@ -112,23 +112,20 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-        public async Task<ActionResult<Epicrisis>> GetNumExpediente([FromQuery] string NumExpediente)
+        public async Task<ActionResult<IEnumerable<EpicrisisNomPaciNomDoc>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
-            if (string.IsNullOrEmpty(NumExpediente))
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
             {
-                return BadRequest("El Numero de expediente es requerida.");
+                return BadRequest("El número de expediente es obligatorio.");
             }
-
-            var epicrisis = await _context.Epicrises.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
-
-            if (epicrisis == null)
+            var resultados = await _context.PBuscarPacienteNombre_EpiNombrePac_EpiNombreDoc(NUM_EXPEDIENTE);
+            if (resultados == null || !resultados.Any())
             {
-                return NotFound("Numero de expediente no encontrado.");
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
             }
-
-            return Ok(epicrisis);
+            return Ok(resultados);
         }
-
+        /*
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodEpicrisis")]
         public async Task<ActionResult<Epicrisis>> GetCodEpicrisis([FromQuery] int CodEpicrisis)
@@ -146,17 +143,27 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(epicrisis);
-        }
+        }*/
 
-        [HttpGet("listarepicrisisnompacinomdoc")]
+        [HttpGet("Buscarpormanombrepaciente")]
 
-        public async Task<List<EpicrisisNomPaciNomDoc>> GetEpicrisisNomPaciNomDocAsync()
+        public async Task<ActionResult<IEnumerable<EpicrisisNomPaciNomDoc>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
         {
-            var EpicrisisNomPaciNomDoc = await _context.EpicrisisNomPaciNomDoc
-                .FromSqlRaw("EXEC PGetPacienteNombre_EpiNombrePac_EpiNombreDoc")
-                .ToListAsync();
 
-            return EpicrisisNomPaciNomDoc;
+
+            if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PBuscarEpicrisis_NombrePaciente(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
         }
     }
 

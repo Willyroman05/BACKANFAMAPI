@@ -11,7 +11,7 @@ namespace BACKANFAMAPI.Models
         public string PRIMER_APELLIDO { get; set; } = null!;
 
 
-        public int COD_NOTA { get; set; }
+       
 
         public int NUMERO_NOTA { get; set; }
 
@@ -37,7 +37,7 @@ namespace BACKANFAMAPI.Models
         public double PESO { get; set; }
 
 
-        public string COD_DOCTOR { get; set; } = null!;
+     
         public string PRIMER_NOMBRED { get; set; } = null!;
         public string PRIMER_APELLIDOD { get; set; } = null!;
 

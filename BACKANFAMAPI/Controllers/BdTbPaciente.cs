@@ -128,6 +128,25 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(paciente);
         }
+        //Metodo para listar los datos en la api por numeroexpediente
+
+        [HttpGet("buscarpornumexpedienteunidos")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Get([FromQuery] string NUM_EXPEDIENTE)
+        {
+
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
+            {
+                return BadRequest("El número de expediente es obligatorio.");
+            }
+
+            var resultados = await _context.PPaciente_Unidos(NUM_EXPEDIENTE);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
+            }
+            return Ok(resultados);
+        }
 
         //Metodo para listar los datos en la api por cedula
         [HttpGet("buscarporcedula")]
@@ -196,7 +215,7 @@ namespace BACKANFAMAPI.Controllers
             return PacienteDepartamento;
         }
 
-        [HttpGet("Listarpacienteunidos")]
+        [HttpGet("Buscarpacienteunidos")]
 
         public async Task<List<PacienteUnidos>> GetPacienteUnidosoAsync()
         {
@@ -207,7 +226,25 @@ namespace BACKANFAMAPI.Controllers
             return PacienteUnidos;
         }
 
+        [HttpGet("Buscarpacienteunidosnombre")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
+        {
 
+
+            if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PPaciente_Unidos_PacienteNombre(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
+        }
     }
 
 

@@ -101,7 +101,7 @@ namespace BACKANFAMAPI.Controllers
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
-        //Metodo para listar los datos en la api por CodDoctor
+       /* //Metodo para listar los datos en la api por CodDoctor
         [HttpGet("buscarporcoddoctor")]
         public async Task<ActionResult<NotaEvolucion>> GetCodDoctor([FromQuery] string CodDoctor)
         {
@@ -119,27 +119,31 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(NotaEvolucion);
         }
-
+       */
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
-        public async Task<ActionResult<NotaEvolucion>> GetNumExpediente([FromQuery] string NumExpediente)
+        public async Task<ActionResult<IEnumerable<NotaEvolucionNomPacNomDoc>>> Get([FromQuery] string NUM_EXPEDIENTE)
         {
-            if (string.IsNullOrEmpty(NumExpediente))
+
+            if (string.IsNullOrEmpty(NUM_EXPEDIENTE))
             {
-                return BadRequest("El Numero de expediente es requerida.");
+                return BadRequest("El número de expediente es obligatorio.");
             }
 
-            var NotaEvolucions = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.NumExpediente == NumExpediente);
+            // Llamada al método de base de datos
+            var resultados = await _context.PBuscarPacienteNombre_NotaNombrePac_NotaNombreDoc(NUM_EXPEDIENTE);
 
-            if (NotaEvolucions == null)
+            // Validar cuando no se encuentran resultados
+            if (resultados == null || !resultados.Any())
             {
-                return NotFound("Numero de expediente no encontrado.");
+                return NotFound("No se encontraron registros para el número de expediente proporcionado.");
             }
 
-            return Ok(NotaEvolucions);
+            // Devolver los resultados encontrados
+            return Ok(resultados);
         }
-
+        /*
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodNotaEvolucions")]
         public async Task<ActionResult<Epicrisis>> GetcodNotaEvolucions([FromQuery] int CodNota)
@@ -158,16 +162,26 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(NotaEvolucions);
         }
+        */
+        [HttpGet("Buscarpormanombrepaciente")]
 
-        [HttpGet("listarnotanompacinomdoc")]
-
-        public async Task<List<NotaEvolucionNomPacNomDoc>> GetENotaEvolucionNomPacNomDoccAsync()
+        public async Task<ActionResult<IEnumerable<NotaEvolucionNomPacNomDoc>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
         {
-            var NotaEvolucionNomPacNomDoc = await _context.NotaEvolucionNomPacNomDoc
-                .FromSqlRaw("EXEC PGetPacienteNombre_NotaNombrePac_NotaNombreDoc")
-                .ToListAsync();
 
-            return NotaEvolucionNomPacNomDoc;
+
+            if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PBuscarNotaEvo_NombrePaciente(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
         }
 
     }
