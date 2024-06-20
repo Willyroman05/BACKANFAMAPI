@@ -116,7 +116,7 @@ namespace BACKANFAMAPI.Controllers
         }
 
         //Metodo para listar los datos en la api por CodEpicrisis
-        [HttpGet("buscarporcodigoproblemas")]
+        /*[HttpGet("buscarporcodigoproblemas")]
         public async Task<ActionResult<ListaProblema>> Getcodigoproblemas([FromQuery] int CodProblemas)
         {
             if ((CodProblemas <= 0))
@@ -133,17 +133,28 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(ListaProblema);
         }
+        */
 
 
-        [HttpGet("listarproblemanombrepaciente")]
+        [HttpGet("Buscarpormanombrepaciente")]
 
-        public async Task<List<ListaProbleasNombrePaciente>> GetListaProbleasNombrePacienteAsync()
+        public async Task<ActionResult<IEnumerable<ListaProbleasNombrePaciente>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
         {
-            var ListaProbleasNombrePaciente = await _context.ListaProbleasNombrePaciente
-                .FromSqlRaw("EXEC PGetPacienteNombre_Listaproblema")
-                .ToListAsync();
 
-            return ListaProbleasNombrePaciente;
+           
+                if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+                {
+                    return BadRequest("El primer nombre y primer apellido de expediente es obligatorio.");
+                }
+
+                var resultados = await _context.PBuscarPacientePorNombres_Listaproblema(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+                if (resultados == null || !resultados.Any())
+                {
+                    return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+                }
+                return Ok(resultados);
+            
         }
     }
 }

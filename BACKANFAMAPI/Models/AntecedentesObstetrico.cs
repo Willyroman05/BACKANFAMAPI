@@ -21,5 +21,7 @@ public partial class AntecedentesObstetrico
 
     public string NumExpediente { get; set; } = null!;
 
+    public string Telefono { get; set; } = null!;
+
     //public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

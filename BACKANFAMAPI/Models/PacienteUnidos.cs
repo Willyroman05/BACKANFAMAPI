@@ -16,7 +16,7 @@ namespace BACKANFAMAPI.Models
         public string PROFESION { get; set; }
         public string SEXO { get; set; }
         public string DIRECCION { get; set; }
-        public int COD_DEPARTAMENTO { get; set; }
+    
         public string PRESION { get; set; }
         public double TEMPERATURA { get; set; }
         public double PESO { get; set; }
@@ -27,7 +27,7 @@ namespace BACKANFAMAPI.Models
         public string USUARIA { get; set; }
 
         //AntecedentesPersonales
-        public int COD_ANTPER { get; set; }
+       
         public int MENSTRUACION { get; set; }
         public int VIDA_SEXUAL { get; set; }
         public int COMP_SEXUALES { get; set; }
@@ -56,7 +56,7 @@ namespace BACKANFAMAPI.Models
 
         //Antecedentes_Obstetricos
 
-        public int COD_HOJARIESGO { get; set; }
+        
 
         public bool MUERTE_FETAL { get; set; }
 
@@ -72,7 +72,7 @@ namespace BACKANFAMAPI.Models
 
         //AntecedentePatPer
 
-        public int COD_ANTPARPER { get; set; }
+        
 
         public bool FIBRODENOMA { get; set; }
 
@@ -112,7 +112,7 @@ namespace BACKANFAMAPI.Models
 
 
         //AntecedenteAntecedentePatFam
-        public int COD_ANTPATFAM { get; set; }
+     
 
         public bool CA_MAMA { get; set; }
 
@@ -151,7 +151,7 @@ namespace BACKANFAMAPI.Models
         public string? ENFREN_PARENTESCO { get; set; }
 
         //Informacion
-        public int COD_INFO { get; set; }
+        
 
         public string MOT_VISITA { get; set; } = null!;
 

@@ -125,7 +125,7 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
-
+        /*
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodEpicrisis")]
         public async Task<ActionResult<Epicrisis>> GetCodEpicrisis([FromQuery] int CodEpicrisis)
@@ -143,17 +143,27 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(epicrisis);
-        }
+        }*/
 
-        [HttpGet("listarepicrisisnompacinomdoc")]
+        [HttpGet("Buscarpormanombrepaciente")]
 
-        public async Task<List<EpicrisisNomPaciNomDoc>> GetEpicrisisNomPaciNomDocAsync()
+        public async Task<ActionResult<IEnumerable<EpicrisisNomPaciNomDoc>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
         {
-            var EpicrisisNomPaciNomDoc = await _context.EpicrisisNomPaciNomDoc
-                .FromSqlRaw("EXEC PGetPacienteNombre_EpiNombrePac_EpiNombreDoc")
-                .ToListAsync();
 
-            return EpicrisisNomPaciNomDoc;
+
+            if (string.IsNullOrEmpty(PRIMER_NOMBRE) || string.IsNullOrEmpty(PRIMER_APELLIDO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PBuscarEpicrisis_NombrePaciente(PRIMER_NOMBRE, PRIMER_APELLIDO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
         }
     }
 

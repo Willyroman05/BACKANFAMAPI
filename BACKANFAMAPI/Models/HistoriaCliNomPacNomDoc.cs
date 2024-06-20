@@ -8,11 +8,11 @@ namespace BACKANFAMAPI.Models
         public string PRIMER_NOMBRE { get; set; } = null!;
         public string PRIMER_APELLIDO { get; set; } = null!;
 
-        public string COD_DOCTOR { get; set; } = null!;
+       
         public string PRIMER_NOMBRED { get; set; } = null!;
         public string PRIMER_APELLIDOD { get; set; } = null!;
 
-        public int COD_HISTORIA_CLINICA { get; set; }
+        
 
         public bool DIABETES_MELLITUS { get; set; }
 

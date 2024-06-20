@@ -4,7 +4,7 @@ namespace BACKANFAMAPI.Models
 {
     public class ListaProbleasNombrePaciente
     {
-        public int COD_PROBLEMAS { get; set; }
+  
 
         public int NUMERO_NOTA { get; set; }
 
