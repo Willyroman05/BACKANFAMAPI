@@ -17,7 +17,7 @@ namespace BACKANFAMAPI.Models
 
 
 
-
+        public int COD_HOJARIESGO { get; set; }
         public bool MUERTE_FETAL { get; set; }
 
         public bool ANT_ABORTOS { get; set; }
@@ -31,6 +31,10 @@ namespace BACKANFAMAPI.Models
         public bool CIRUGIAS_PREVIAS { get; set; }
 
         public string Telefono { get; set; } = null!;
+
+
+
+        public int COD_EMBARAZO { get; set; }
 
         public bool DIAGNOSTICO { get; set; }
 
@@ -48,6 +52,8 @@ namespace BACKANFAMAPI.Models
 
 
 
+        public int COD_HISTORIA_CLINICA { get; set; }
+
         public bool DIABETES_MELLITUS { get; set; }
 
         public bool NEFROPATIA { get; set; }
@@ -64,7 +70,7 @@ namespace BACKANFAMAPI.Models
         public DateOnly FECHA { get; set; }
 
 
-
+        public string COD_DOCTOR { get; set; } = null!;
         public string PRIMER_NOMBRED { get; set; } = null!;
 
         
