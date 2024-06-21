@@ -11,9 +11,9 @@ namespace BACKANFAMAPI.Models
         public string PRIMER_APELLIDO { get; set; } = null!;
 
 
-      
 
-        
+
+        public int COD_EPICRISIS { get; set; }
         public DateOnly FECHA { get; set; }
 
         public string HORA { get; set; } = null!;
@@ -40,9 +40,9 @@ namespace BACKANFAMAPI.Models
 
         public string? DATOS_RELEVANTES { get; set; }
 
-        
 
-  
+
+        public string COD_DOCTOR { get; set; } = null!;
         public string PRIMER_NOMBRED { get; set; } = null!;
         public string PRIMER_APELLIDOD { get; set; } = null!;
 
