@@ -86,7 +86,7 @@ namespace BACKANFAMAPI.Controllers
                 }
 
             }
-            return NoContent();
+            return Ok(paciente);
         }
 
 

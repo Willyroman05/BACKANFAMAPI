@@ -23,7 +23,7 @@ public partial class AntecedentePatFam
 
     public string? CaovaParentesco { get; set; }
 
-    public bool Hipertension { get; set; }
+    public bool Hipertensionf { get; set; }
 
     public string? HipertensionParentesco { get; set; }
 
@@ -31,7 +31,7 @@ public partial class AntecedentePatFam
 
     public string? HepatitisParentesco { get; set; }
 
-    public bool Diabetes { get; set; }
+    public bool Diabetesf { get; set; }
 
     public string? DiabetesParentesco { get; set; }
 

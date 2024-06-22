@@ -7,11 +7,11 @@ public partial class Doctor
 {
     public string CodDoctor { get; set; } = null!;
 
-    public string PrimerNombre { get; set; } = null!;
+    public string PrimerNombred { get; set; } = null!;
 
     public string? SegundoNombre { get; set; }
 
-    public string PrimerApellido { get; set; } = null!;
+    public string PrimerApellidod { get; set; } = null!;
 
     public string? SegundoApellido { get; set; }
 

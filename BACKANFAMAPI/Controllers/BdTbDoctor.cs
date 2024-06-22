@@ -89,19 +89,19 @@ namespace BACKANFAMAPI.Controllers
         //Metodo para bucar por nombre
         [HttpGet("buscarpornombre")]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctorPorNombre(
-           [FromQuery] string PrimerNombre,
+           [FromQuery] string PrimerNombred,
            [FromQuery] string? SegundoNombre,
-           [FromQuery] string PrimerApellido,
+           [FromQuery] string PrimerApellidod,
            [FromQuery] string? SegundoApellido)
         {
-            if (string.IsNullOrEmpty(PrimerNombre) || string.IsNullOrEmpty(PrimerApellido))
+            if (string.IsNullOrEmpty(PrimerNombred) || string.IsNullOrEmpty(PrimerApellidod))
             {
                 return BadRequest("PrimerNombre y PrimerApellido son requeridos.");
             }
 
             var query = _context.Doctors.AsQueryable();
 
-            query = query.Where(p => p.PrimerNombre == PrimerNombre && p.PrimerApellido == PrimerApellido);
+            query = query.Where(p => p.PrimerNombred == PrimerNombred && p.PrimerApellidod == PrimerApellidod);
 
             if (!string.IsNullOrEmpty(SegundoNombre))
             {
