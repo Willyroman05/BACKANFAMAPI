@@ -203,7 +203,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("CAOVA_PARENTESCO");
-            entity.Property(e => e.DIABETESF).HasColumnName("DIABETESF");
+            entity.Property(e => e.Diabetes).HasColumnName("DIABETES");
             entity.Property(e => e.DiabetesParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -223,7 +223,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("HEPATITIS_PARENTESCO");
-            entity.Property(e => e.HIPERTENSIONF).HasColumnName("HIPERTENSIONF");
+            entity.Property(e => e.Hipertension).HasColumnName("HIPERTENSION");
             entity.Property(e => e.HipertensionParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -386,22 +386,18 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasColumnName("COD_DOCTOR");
             
             
-            entity.Property(e => e.PrimerApellido)
+            entity.Property(e => e.PrimerNombred)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_APELLIDOD");
+                .HasColumnName("PRIMER_APELLIDO");
             entity.Property(e => e.PrimerNombre)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_NOMBRED");
+                .HasColumnName("PRIMER_NOMBRE");
             entity.Property(e => e.SegundoApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("SEGUNDO_APELLIDO");
-            entity.Property(e => e.SegundoNombre)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("SEGUNDO_NOMBRE");
 
             entity.Property(e => e.CEDULA)
                .HasMaxLength(20)
@@ -619,15 +615,19 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.Talla).HasColumnName("TALLA");
             entity.Property(e => e.Temperatura).HasColumnName("TEMPERATURA");
 
-          /*  entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.NotaEvolucions)
-                .HasForeignKey(d => d.CodDoctor)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CODDOC");*/
+            entity.Property(e => e.PESO)
+                .IsUnicode(false)
+                .HasColumnName("PESO");
 
-           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.NotaEvolucions)
-                .HasForeignKey(d => d.NumExpediente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP_NOTA");*/
+            /*  entity.HasOne(d => d.CodDoctorNavigation).WithMany(p => p.NotaEvolucions)
+                  .HasForeignKey(d => d.CodDoctor)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_CODDOC");*/
+
+            /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.NotaEvolucions)
+                 .HasForeignKey(d => d.NumExpediente)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_NUMEXP_NOTA");*/
         });
 
         modelBuilder.Entity<Paciente>(entity =>
