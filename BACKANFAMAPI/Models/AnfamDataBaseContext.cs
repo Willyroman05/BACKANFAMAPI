@@ -172,7 +172,7 @@ public partial class AnfamDataBaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=T15PGENWIROMAN\\SQLEXPRESS; Database=ANFAM_DataBase; Trusted_Connection=True; TrustServerCertificate=True ");
+        => optionsBuilder.UseSqlServer("Server=localhost; Database=ANFAM_DataBase; Trusted_Connection=True; TrustServerCertificate=True ");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -203,7 +203,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("CAOVA_PARENTESCO");
-            entity.Property(e => e.Diabetes).HasColumnName("DIABETES");
+            entity.Property(e => e.DIABETESF).HasColumnName("DIABETESF");
             entity.Property(e => e.DiabetesParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -223,7 +223,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("HEPATITIS_PARENTESCO");
-            entity.Property(e => e.Hipertension).HasColumnName("HIPERTENSION");
+            entity.Property(e => e.HIPERTENSIONF).HasColumnName("HIPERTENSIONF");
             entity.Property(e => e.HipertensionParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -389,11 +389,11 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.PrimerApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_APELLIDO");
+                .HasColumnName("PRIMER_APELLIDOD");
             entity.Property(e => e.PrimerNombre)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_NOMBRE");
+                .HasColumnName("PRIMER_NOMBRED");
             entity.Property(e => e.SegundoApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)

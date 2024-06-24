@@ -71,7 +71,7 @@ namespace BACKANFAMAPI.Controllers
                 }
 
             }
-            return NoContent();
+            return Ok(informacion);
         }
 
 

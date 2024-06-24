@@ -70,7 +70,7 @@ namespace BACKANFAMAPI.Controllers
                 }
 
             }
-            return NoContent();
+            return Ok(antecedentePatFam);
         }
 
 
