@@ -79,7 +79,7 @@ namespace BACKANFAMAPI.Controllers
                 }
 
             }
-            return NoContent();
+            return Ok(notaEvolucion);
         }
 
 
@@ -182,6 +182,23 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
 
+        }
+
+
+        [HttpGet("buscarporcodigo/{CodNota}")]
+        public async Task<ActionResult<NotaEvolucion>> GetNotaEvolucion(int CodNota)
+        {
+           
+            var notaEvolucion = await _context.NotaEvolucions.FindAsync(CodNota);
+
+           
+            if (notaEvolucion == null)
+            {
+                return NotFound();
+            }
+
+            
+            return notaEvolucion;
         }
 
     }

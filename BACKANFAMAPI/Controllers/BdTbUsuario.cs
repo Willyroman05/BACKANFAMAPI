@@ -57,7 +57,7 @@ namespace BACKANFAMAPI.Controllers
             }
             _context.Usuarios.Remove(elemento);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(new { message = "Usuario eliminado con éxito" });
         }
 
         //Metodo para actualizar los datos en la api

@@ -110,6 +110,13 @@ public partial class AnfamDataBaseContext : DbContext
         return result;
     }
 
+    public async Task<List<EpicrisisNomPaciNomDoc>> PBuscarPacientecodigo_EpiNombrePac_EpiNombreDoc(int COD_EPICRISIS)
+    {
+        var param = new SqlParameter("@COD_EPICRISIS", COD_EPICRISIS);
+        var result = await this.EpicrisisNomPaciNomDoc.FromSqlRaw("EXEC PBuscarPacientecodigo_EpiNombrePac_EpiNombreDoc @COD_EPICRISIS", param).ToListAsync();
+        return result;
+    }
+
     public async Task<List<RefereciaNomPacNomDocNomDep>> PBuscarReferencia_NomPac_NomDoc_NomDep(string NUM_EXPEDIENTE)
     {
         var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
@@ -203,7 +210,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("CAOVA_PARENTESCO");
-            entity.Property(e => e.Diabetes).HasColumnName("DIABETES");
+            entity.Property(e => e.DIABETESF).HasColumnName("DIABETESF");
             entity.Property(e => e.DiabetesParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -223,7 +230,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("HEPATITIS_PARENTESCO");
-            entity.Property(e => e.Hipertension).HasColumnName("HIPERTENSION");
+            entity.Property(e => e.HIPERTENSIONF).HasColumnName("HIPERTENSIONF");
             entity.Property(e => e.HipertensionParentesco)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -390,7 +397,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("PRIMER_APELLIDO");
-            entity.Property(e => e.PrimerNombre)
+            entity.Property(e => e.PrimerNombred)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("PRIMER_NOMBRE");

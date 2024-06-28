@@ -73,6 +73,56 @@ namespace BACKANFAMAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("buscarpornumexpediente")]
+        public async Task<ActionResult<IEnumerable<AntecedentesObstetrico>>> GetAntecedentesObstetricoPorNumExpediente(string numExpediente)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(numExpediente))
+                {
+                    return BadRequest("El número de expediente no puede estar vacío.");
+                }
+
+                var result = await _context.AntecedentesObstetricos
+                    .Where(a => a.NumExpediente == numExpediente)
+                    .ToListAsync();
+
+                if (result == null || result.Count == 0)
+                {
+                    return NotFound("No se encontraron antecedentes obstétricos para el número de expediente proporcionado.");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("buscarporcodhojariesgo")]
+        public async Task<ActionResult<AntecedentesObstetrico>> GetAntecedentesObstetricoPorCodHojariesgo([FromQuery(Name = "codHojariesgo")] int codHojariesgo)
+        {
+            try
+            {
+                var result = await _context.AntecedentesObstetricos
+                    .FirstOrDefaultAsync(a => a.CodHojariesgo == codHojariesgo);
+
+                if (result == null)
+                {
+                    return NotFound("No se encontraron antecedentes obstétricos para el código de hoja de riesgo proporcionado.");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         //Metodo post en la api
         [HttpPost("post")]

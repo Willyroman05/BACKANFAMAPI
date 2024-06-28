@@ -125,7 +125,7 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
-        /*
+
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodEpicrisis")]
         public async Task<ActionResult<Epicrisis>> GetCodEpicrisis([FromQuery] int CodEpicrisis)
@@ -143,7 +143,7 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(epicrisis);
-        }*/
+        }
 
         [HttpGet("Buscarpormanombrepaciente")]
 
@@ -164,6 +164,21 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
 
+        }
+
+        [HttpGet("buscarunidoporcodigoepicrisis")]
+        public async Task<ActionResult<IEnumerable<EpicrisisNomPaciNomDoc>>> Get([FromQuery] int CodEpicrisis)
+        {
+            if (CodEpicrisis <= 0)
+            {
+                return BadRequest("El codigo epicrisis es obligatorio.");
+            }
+            var resultados = await _context.PBuscarPacientecodigo_EpiNombrePac_EpiNombreDoc(CodEpicrisis);
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el codigo epicrisis proporcionado.");
+            }
+            return Ok(resultados);
         }
     }
 

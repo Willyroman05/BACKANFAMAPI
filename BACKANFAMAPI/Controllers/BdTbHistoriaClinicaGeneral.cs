@@ -122,7 +122,7 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
-        /*
+
         //Metodo para listar los datos en la api por CodEpicrisis
         [HttpGet("buscarporcodhistoriaclinica")]
         public async Task<ActionResult<Epicrisis>> Getcodhistoriaclinica([FromQuery] int CodHistoriaClinica)
@@ -140,7 +140,7 @@ namespace BACKANFAMAPI.Controllers
             }
 
             return Ok(HistoriaClinicaGenerals);
-        }*/
+        }
         [HttpGet("Buscarpormanombrepaciente")]
 
         public async Task<ActionResult<IEnumerable<HistoriaCliNomPacNomDoc>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
