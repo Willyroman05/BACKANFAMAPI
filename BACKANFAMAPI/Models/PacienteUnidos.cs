@@ -55,21 +55,7 @@ namespace BACKANFAMAPI.Models
         public bool CRIOTERAPIA { get; set; }
         public bool BIOPASIS { get; set; }
 
-        //Antecedentes_Obstetricos
-
-
-        public int COD_HOJARIESGO { get; set; }
-        public bool MUERTE_FETAL { get; set; }
-
-        public bool ANT_ABORTOS { get; set; }
-
-        public bool PESO_250 { get; set; }
-
-        public bool PESO_450 { get; set; }
-
-        public bool INTERNADA { get; set; }
-
-        public bool CIRUGIAS_PREVIAS { get; set; }
+        
 
         //AntecedentePatPer
 

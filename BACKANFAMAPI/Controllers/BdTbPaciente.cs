@@ -220,7 +220,7 @@ namespace BACKANFAMAPI.Controllers
         public async Task<List<PacienteUnidos>> GetPacienteUnidosoAsync()
         {
             var PacienteUnidos = await _context.PacienteUnidos
-                .FromSqlRaw("EXEC PGetPaciente_Unidos")
+                .FromSqlRaw("EXEC PPaciente_Unidos")
                 .ToListAsync();
 
             return PacienteUnidos;
