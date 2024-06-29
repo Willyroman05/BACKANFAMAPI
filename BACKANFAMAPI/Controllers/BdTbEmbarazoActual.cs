@@ -84,5 +84,34 @@ namespace BACKANFAMAPI.Controllers
             return Ok(embarazoActual);
             //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
+
+        [HttpGet("listar/{numExpediente}")]
+        public async Task<ActionResult<IEnumerable<EmbarazoActual>>> GetEmbarazoActualByExpediente(string numExpediente)
+        {
+            var embarazoActuals = await _context.EmbarazoActuals
+                                                .Where(e => e.NumExpediente == numExpediente)
+                                                .ToListAsync();
+
+            if (embarazoActuals == null || embarazoActuals.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return embarazoActuals;
+        }
+
+        [HttpGet("listarporcodigo/{codEmbarazo}")]
+        public async Task<ActionResult<EmbarazoActual>> GetEmbarazoActualByCodigo(int codEmbarazo)
+        {
+            var embarazoActual = await _context.EmbarazoActuals
+                                               .FirstOrDefaultAsync(e => e.CodEmbarazo == codEmbarazo);
+
+            if (embarazoActual == null)
+            {
+                return NotFound();
+            }
+
+            return embarazoActual;
+        }
     }
 }

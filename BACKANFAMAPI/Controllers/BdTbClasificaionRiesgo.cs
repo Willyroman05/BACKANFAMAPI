@@ -1,5 +1,6 @@
 ﻿using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -52,6 +53,38 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
 
+        }
+
+        [HttpGet("buscarporcodigoclasificacionriesgo")]
+        public async Task<ActionResult<IEnumerable<ClasificaciondeRiesgos>>> Get([FromQuery] int COD_HOJARIESGO)
+        {
+
+            if (COD_HOJARIESGO <= 0)
+            {
+                return BadRequest("El codigo Hoja de Riego es obligatorio.");
+            }
+
+            var resultados = await _context.PBuscarHistoriaClin_Embrazo_Obstetricos_codRiesgo(COD_HOJARIESGO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el número de codigo Hoja de Riego.");
+            }
+            return Ok(resultados);
+        }
+
+        [HttpGet("listarclasificacionderiesgos")]
+        public async Task<ActionResult<IEnumerable<ClasificaciondeRiesgos>>> ListarHistoriaClinica()
+        {
+            var resultados = await _context.Set<ClasificaciondeRiesgos>()
+                                           .FromSqlRaw("EXEC PListarHistoriaClin_Embrazo_Obstetricos")
+                                           .ToListAsync();
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros.");
+            }
+            return Ok(resultados);
         }
     }
 }

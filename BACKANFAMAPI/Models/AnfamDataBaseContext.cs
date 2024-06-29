@@ -80,6 +80,13 @@ public partial class AnfamDataBaseContext : DbContext
         return result;
     }
 
+    public async Task<List<ClasificaciondeRiesgos>> PBuscarHistoriaClin_Embrazo_Obstetricos_codRiesgo(int COD_HOJARIESGO)
+    {
+        var param = new SqlParameter("@COD_HOJARIESGO", COD_HOJARIESGO);
+        var result = await this.ClasificaciondeRiesgos.FromSqlRaw("EXEC PBuscarHistoriaClin_Embrazo_Obstetricos_codRiesgo @COD_HOJARIESGO", param).ToListAsync();
+        return result;
+    }
+
     public async Task<List<EpicrisisNomPaciNomDoc>> PBuscarPacienteNombre_EpiNombrePac_EpiNombreDoc(string NUM_EXPEDIENTE)
     {
         var param = new SqlParameter("@NUM_EXPEDIENTE", NUM_EXPEDIENTE ?? (object)DBNull.Value);
@@ -391,16 +398,25 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("COD_DOCTOR");
-            
-            
+
+
             entity.Property(e => e.PrimerNombred)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_APELLIDO");
-            entity.Property(e => e.PrimerNombred)
+                .HasColumnName("PRIMER_NOMBRED");
+
+            entity.Property(e => e.SegundoNombre)
                 .HasMaxLength(30)
                 .IsUnicode(false)
-                .HasColumnName("PRIMER_NOMBRE");
+                .HasColumnName("SEGUNDO_NOMBRE");
+
+
+            entity.Property(e => e.PrimerApellidod)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("PRIMER_APELLIDOD");
+
+
             entity.Property(e => e.SegundoApellido)
                 .HasMaxLength(30)
                 .IsUnicode(false)
