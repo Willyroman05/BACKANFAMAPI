@@ -25,9 +25,17 @@ namespace BACKANFAMAPI.Controllers
         //Metodo para listar los datos en la api
         [HttpGet]
         [Route("listar")]
-        public async Task<ActionResult<IEnumerable<NotaEvolucion>>> GetNotaEvolucion()
+        public async Task<ActionResult<IEnumerable<NotaEvolucionNomPacNomDoc>>> ListarHistoriaClinica()
         {
-            return await _context.NotaEvolucions.ToListAsync();
+            var resultados = await _context.Set<NotaEvolucionNomPacNomDoc>()
+                                           .FromSqlRaw("EXEC PListanotaevo")
+                                           .ToListAsync();
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros.");
+            }
+            return Ok(resultados);
         }
 
         //Metodo para Eliminar los datos en la api
