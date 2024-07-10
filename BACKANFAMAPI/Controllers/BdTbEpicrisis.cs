@@ -3,9 +3,11 @@ using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Cors; // Importa el espacio de nombres de CORS
 
 namespace BACKANFAMAPI.Controllers
 {
+    [EnableCors("PermitirOrigenEspecífico")] // Habilita CORS con la política específica
     [Route("api/bdtbepicrisis")]
     [ApiController]
     public class BdTbEpicrisis : ControllerBase
@@ -25,6 +27,7 @@ namespace BACKANFAMAPI.Controllers
         }
 
         //Metodo para listar los datos en la api
+        [EnableCors("PermitirOrigenEspecífico")] // Habilita CORS con la política específica
         [HttpGet]
         [Route("listar")]
         public async Task<ActionResult<IEnumerable<EpicrisisNomPaciNomDoc>>> ListarHistoriaClinica()
@@ -39,6 +42,9 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
+
+        [HttpGet]
+        
         //Metodo para Eliminar los datos en la api
         [HttpDelete("eliminar/{CodEpicrisis}")]
         public async Task<IActionResult> Delete(int CodEpicrisis)

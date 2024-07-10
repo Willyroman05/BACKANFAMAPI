@@ -47,6 +47,7 @@ public partial class Paciente
     public string Centro { get; set; } = null!;
 
     public string Usuaria { get; set; } = null!;
+
     /*
   //  [JsonIgnore]
     public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
@@ -59,8 +60,6 @@ public partial class Paciente
       public virtual ICollection<AntecedentesObstetrico> AntecedentesObstetricos { get; set; } = new List<AntecedentesObstetrico>();
 
       public virtual ICollection<AntecedentesPersonale> AntecedentesPersonales { get; set; } = new List<AntecedentesPersonale>();
-
-
 
       public virtual ICollection<EmbarazoActual> EmbarazoActuals { get; set; } = new List<EmbarazoActual>();
 

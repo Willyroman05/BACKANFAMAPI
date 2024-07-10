@@ -187,6 +187,7 @@ public partial class AnfamDataBaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=T15PGENWIROMAN\\SQLEXPRESS; Database=ANFAM_DataBase; Trusted_Connection=True; TrustServerCertificate=True ");
+  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -369,11 +370,12 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.ReempHormonal).HasColumnName("REEMP_HORMONAL");
             entity.Property(e => e.Sa).HasColumnName("SA");
             entity.Property(e => e.VidaSexual).HasColumnName("VIDA_SEXUAL");
+            entity.Property(e => e.THERMOCUAGULACION).HasColumnName("THERMOCUAGULACION");
 
-           /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesPersonales)
-                .HasForeignKey(d => d.NumExpediente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NUMEXP");*/
+            /* entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.AntecedentesPersonales)
+                 .HasForeignKey(d => d.NumExpediente)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_NUMEXP");*/
         });
 
         modelBuilder.Entity<Departamento>(entity =>
@@ -534,6 +536,7 @@ public partial class AnfamDataBaseContext : DbContext
             entity.Property(e => e.CualquierOtro).HasColumnName("CUALQUIER_OTRO");
             entity.Property(e => e.DiabetesMellitus).HasColumnName("DIABETES_MELLITUS");
             entity.Property(e => e.Fecha).HasColumnName("FECHA");
+            entity.Property(e => e.CICLO_CONTROL).HasColumnName("CICLO_CONTROL");
             entity.Property(e => e.Nefropatia).HasColumnName("NEFROPATIA");
             entity.Property(e => e.NumExpediente)
                 .HasMaxLength(20)

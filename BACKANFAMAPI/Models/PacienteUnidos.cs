@@ -54,8 +54,9 @@ namespace BACKANFAMAPI.Models
         public DateOnly FEC_NAC_HIJO { get; set; }
         public bool CRIOTERAPIA { get; set; }
         public bool BIOPASIS { get; set; }
+        public bool THERMOCUAGULACION { get; set; }
 
-        
+
 
         //AntecedentePatPer
 

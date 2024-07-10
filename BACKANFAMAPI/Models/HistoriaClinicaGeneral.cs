@@ -26,6 +26,10 @@ public partial class HistoriaClinicaGeneral
     public string NumExpediente { get; set; } = null!;
 
     public string CodDoctor { get; set; } = null!;
+
+    public int CICLO_CONTROL { get; set; }
+
+
     /*
     public virtual Doctor CodDoctorNavigation { get; set; } = null!;
 
