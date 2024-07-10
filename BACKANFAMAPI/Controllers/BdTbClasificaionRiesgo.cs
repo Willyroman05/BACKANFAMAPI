@@ -26,6 +26,7 @@ namespace BACKANFAMAPI.Controllers
             }
 
             var resultados = await _context.PBuscarHistoriaClin_Embrazo_Obstetricos(NUM_EXPEDIENTE);
+            
 
             if (resultados == null || !resultados.Any())
             {

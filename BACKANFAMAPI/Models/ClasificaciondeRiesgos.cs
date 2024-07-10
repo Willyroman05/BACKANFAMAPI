@@ -68,6 +68,7 @@ namespace BACKANFAMAPI.Models
 
         [JsonConverter(typeof(DateOnlyJsonConverter))]
         public DateOnly FECHA { get; set; }
+        public int CICLO_CONTROL { get; set; }
 
 
         public string COD_DOCTOR { get; set; } = null!;
