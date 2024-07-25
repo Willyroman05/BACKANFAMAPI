@@ -22,6 +22,12 @@ public partial class EmbarazoActual
     public bool PresionArterial { get; set; }
 
     public string NumExpediente { get; set; } = null!;
+    public int ID_CITA { get; set; }
+    public int NUM_CITA { get; set; }
+  //  public bool IsEdited { get; set; } = false;
 
-  //  public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
+    
+   
+
+    //  public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

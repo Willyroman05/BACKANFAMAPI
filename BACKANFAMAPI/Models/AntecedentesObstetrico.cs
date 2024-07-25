@@ -22,6 +22,9 @@ public partial class AntecedentesObstetrico
     public string NumExpediente { get; set; } = null!;
 
     public string Telefono { get; set; } = null!;
+    public int ID_CITA { get; set; }
+    public int NUM_CITA { get; set; }
 
+    //   public bool IsEdited { get; set; } = false;
     //public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

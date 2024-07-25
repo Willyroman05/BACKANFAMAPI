@@ -25,7 +25,7 @@ namespace BACKANFAMAPI.Controllers
                 return BadRequest("El número de expediente es obligatorio.");
             }
 
-            var resultados = await _context.PBuscarHistoriaClin_Embrazo_Obstetricos(NUM_EXPEDIENTE);
+            var resultados = await _context.PBuscarHistoriaClin_Embarazo_Obstetricos(NUM_EXPEDIENTE);
             
 
             if (resultados == null || !resultados.Any())
@@ -78,7 +78,7 @@ namespace BACKANFAMAPI.Controllers
         public async Task<ActionResult<IEnumerable<ClasificaciondeRiesgos>>> ListarHistoriaClinica()
         {
             var resultados = await _context.Set<ClasificaciondeRiesgos>()
-                                           .FromSqlRaw("EXEC PListarHistoriaClin_Embrazo_Obstetricos")
+                                           .FromSqlRaw("EXEC Listar_Clasificacion")
                                            .ToListAsync();
 
             if (resultados == null || !resultados.Any())

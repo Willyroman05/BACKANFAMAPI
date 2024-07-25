@@ -61,7 +61,6 @@ public partial class AntecedentesPersonale
     public string NumExpediente { get; set; } = null!;
 
     public bool THERMOCUAGULACION { get; set; }
-    
-
+   // public bool IsEdited { get; set; } = false;
     // public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

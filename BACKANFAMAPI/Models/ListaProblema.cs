@@ -20,6 +20,7 @@ public partial class ListaProblema
     public bool Resuelto { get; set; }
 
     public string NumExpediente { get; set; } = null!;
+   // public bool IsEdited { get; set; } = false;
 
     //public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

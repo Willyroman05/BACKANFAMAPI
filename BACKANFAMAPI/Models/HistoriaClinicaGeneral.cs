@@ -27,9 +27,12 @@ public partial class HistoriaClinicaGeneral
 
     public string CodDoctor { get; set; } = null!;
 
-    public int CICLO_CONTROL { get; set; }
 
 
+    public int NUM_CITA { get; set; }
+
+    public int ID_CITA { get; set; }
+    //public bool IsEdited { get; set; } = false;
     /*
     public virtual Doctor CodDoctorNavigation { get; set; } = null!;
 

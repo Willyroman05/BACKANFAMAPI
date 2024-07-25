@@ -12,6 +12,7 @@ public partial class Informacion
     public string? NotaMedica { get; set; }
 
     public string NumExpediente { get; set; } = null!;
+   // public bool IsEdited { get; set; } = false;
 
-   // public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
+    // public virtual Paciente NumExpedienteNavigation { get; set; } = null!;
 }

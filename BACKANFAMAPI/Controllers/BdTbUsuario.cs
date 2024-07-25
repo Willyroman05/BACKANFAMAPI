@@ -59,7 +59,7 @@ namespace BACKANFAMAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Usuario eliminado con éxito" });
         }
-
+        /*
         //Metodo para actualizar los datos en la api
         [HttpPut("actualizar/{CodAdmin}")]
         public async Task<IActionResult> PutUsuario(int CodAdmin, Usuario usuario)
@@ -68,7 +68,24 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest();
             }
-            _context.Entry(usuario).State = EntityState.Modified;
+            var existingUser = await _context.Usuarios.FindAsync(CodAdmin);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+            if (existingUser.IsEdited)
+            {
+                return BadRequest(new { message = "Este usuario ya ha sido editado y no puede ser editado nuevamente." });
+            }
+
+            existingUser.Nombre = usuario.Nombre;
+            existingUser.Apellido = usuario.Apellido;
+            existingUser.Correo = usuario.Correo;
+            existingUser.Contraseña = usuario.Contraseña;
+            existingUser.CodRol = usuario.CodRol;
+            existingUser.IsEdited = true;
+
+            _context.Entry(existingUser).State = EntityState.Modified;
 
             try
             {
@@ -84,12 +101,11 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
             return NoContent();
         }
 
-
+        */
         //Metodo post en la api
         [HttpPost("post")]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)

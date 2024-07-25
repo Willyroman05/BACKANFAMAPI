@@ -10,6 +10,7 @@ public partial class Departamento
 
     public string Nombre { get; set; } = null!;
 
+   // public bool IsEdited { get; set; } = false;
     /*
 
  //   [JsonIgnore]

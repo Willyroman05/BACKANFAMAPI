@@ -22,7 +22,8 @@ namespace BACKANFAMAPI.Models
         public string CONTRAREFERENCIA { get; set; } = null!;
 
         public int COD_DEPARTAMENTO { get; set; }
-        public string NOMBRE_DEPARTAMENTO { get; set; } = null!; 
-        
+        public string NOMBRE_DEPARTAMENTO { get; set; } = null!;
+        //public bool IsEdited { get; set; } = false;
+
     }
 }

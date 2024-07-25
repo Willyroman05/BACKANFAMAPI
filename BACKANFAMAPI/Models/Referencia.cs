@@ -27,10 +27,11 @@ public partial class Referencia
     public string CodDoctor { get; set; } = null!;
 
     public int CodDepartamento { get; set; }
+   // public bool IsEdited { get; set; } = false;
 
-   /* public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
+    /* public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;
 
-    public virtual Doctor CodDoctorNavigation { get; set; } = null!;
+     public virtual Doctor CodDoctorNavigation { get; set; } = null!;
 
-    public virtual Paciente NumExpedienteNavigation { get; set; } = null!;*/
+     public virtual Paciente NumExpedienteNavigation { get; set; } = null!;*/
 }
