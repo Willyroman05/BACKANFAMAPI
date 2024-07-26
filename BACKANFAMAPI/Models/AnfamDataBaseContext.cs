@@ -64,6 +64,7 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<HistoriaCliNomPacNomDoc> HistoriaCliNomPacNomDoc { get; set; }
 
     public virtual DbSet<ClasificaciondeRiesgos> ClasificaciondeRiesgos { get; set; }
+    public virtual DbSet<cita> citas { get; set; }
 
 
     public async Task<List<ListaProbleasNombrePaciente>> PBuscarPacienteNombre_ListaproblemaAsync(string NUM_EXPEDIENTE)
@@ -825,6 +826,50 @@ public partial class AnfamDataBaseContext : DbContext
              //   .HasForeignKey(d => d.CodRol)
              //   .OnDelete(DeleteBehavior.ClientSetNull)
             //    .HasConstraintName("FK_ROL");
+        });
+
+
+        modelBuilder.Entity<Informacion>(entity =>
+        {
+            entity.HasKey(e => e.CodInfo).HasName("PKINFO");
+
+            entity.ToTable("Informacion");
+
+            entity.Property(e => e.CodInfo).HasColumnName("COD_INFO");
+            entity.Property(e => e.MotVisita)
+                .IsUnicode(false)
+                .HasColumnName("MOT_VISITA");
+            entity.Property(e => e.NotaMedica)
+                .IsUnicode(false)
+                .HasColumnName("NOTA_MEDICA");
+            entity.Property(e => e.NumExpediente)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("NUM_EXPEDIENTE");
+
+
+
+
+            /*entity.HasOne(d => d.NumExpedienteNavigation).WithMany(p => p.Informacions)
+                .HasForeignKey(d => d.NumExpediente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NUMEXP_INFO");*/
+        });
+        modelBuilder.Entity<cita>(entity =>
+        {
+            entity.HasKey(e => e.id_cita).HasName("PKINFO");
+
+            entity.ToTable("cita");
+
+            entity.Property(e => e.id_cita)
+                .HasColumnName("ID_CITA");
+
+            entity.Property(e => e.num_cita)
+                .HasColumnName("NUM_CITA");
+
+     
+
+          
         });
 
         OnModelCreatingPartial(modelBuilder);
