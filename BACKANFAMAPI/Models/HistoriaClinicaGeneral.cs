@@ -21,7 +21,7 @@ public partial class HistoriaClinicaGeneral
     public bool AltoRiesgo { get; set; }
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fecha { get; set; }
+    public DateOnly? Fecha { get; set; }
 
     public string NumExpediente { get; set; } = null!;
 

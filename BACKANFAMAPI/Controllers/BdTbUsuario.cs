@@ -183,7 +183,7 @@ namespace BACKANFAMAPI.Controllers
                 }
             }
 
-            return Ok("Contraseña actualizada con éxito.");
+            return Ok(new { message = "Contraseña actualizada correctamente." });
         }
 
 
