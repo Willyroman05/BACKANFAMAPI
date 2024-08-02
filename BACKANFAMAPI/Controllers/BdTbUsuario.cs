@@ -161,7 +161,7 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest("La nueva contraseña debe tener al menos 6 caracteres.");
             }
-            x
+            
             // Actualizar la contraseña del usuario
             usuario.Contraseña = model.NuevaContraseña;
 
