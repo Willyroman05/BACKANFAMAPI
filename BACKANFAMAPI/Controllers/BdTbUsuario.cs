@@ -135,6 +135,59 @@ namespace BACKANFAMAPI.Controllers
             return Ok(usuario);
         }
 
+        [HttpPut("actualizarcontraseña/{CodAdmin}")]
+        public async Task<IActionResult> PutPassword(int CodAdmin, [FromBody] ActualizarContraseñaModel model)
+        {
+            if (CodAdmin != model.CodAdmin)
+            {
+                return BadRequest("El ID del usuario no coincide.");
+            }
+
+            var usuario = await _context.Usuarios.FindAsync(CodAdmin);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Verificar la contraseña actual
+            if (usuario.Contraseña != model.ContraseñaActual)
+            {
+                return Unauthorized("La contraseña actual es incorrecta.");
+            }
+
+            // Validar la nueva contraseña
+            if (string.IsNullOrEmpty(model.NuevaContraseña) || model.NuevaContraseña.Length < 6)
+            {
+                return BadRequest("La nueva contraseña debe tener al menos 6 caracteres.");
+            }
+
+            // Actualizar la contraseña del usuario
+            usuario.Contraseña = model.NuevaContraseña;
+
+            _context.Entry(usuario).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!usuarioExists(CodAdmin))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
     }
 }
 
