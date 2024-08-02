@@ -10,7 +10,9 @@ namespace BACKANFAMAPI.Models
         public string PRIMER_APELLIDO { get; set; }
         public string SEGUNDO_APELLIDO { get; set; }
         public string CEDULA { get; set; }
-        public DateOnly FECHA_NAC { get; set; }
+
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_NAC { get; set; }
         public int EDAD { get; set; }
         public string ESCOLARIDAD { get; set; }
         public string PROFESION { get; set; }
@@ -23,7 +25,9 @@ namespace BACKANFAMAPI.Models
         public double PESO { get; set; }
         public double TALLA { get; set; }
         public double IMC { get; set; }
-        public DateOnly FECHA_INGRESO { get; set; }
+
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_INGRESO { get; set; }
         public string CENTRO { get; set; }
         public string USUARIA { get; set; }
 
@@ -38,7 +42,8 @@ namespace BACKANFAMAPI.Models
         public int PARTOS { get; set; }
         public int ABORTOS { get; set; }
         public int CESAREA { get; set; }
-        public DateOnly FUM { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FUM { get; set; }
         public int SA { get; set; }
         public bool LACTANCIA { get; set; }
         public bool EMBARAZO { get; set; }
@@ -51,7 +56,8 @@ namespace BACKANFAMAPI.Models
         public bool FUMA { get; set; }
         public int CIGARROS_DIA { get; set; }
         public bool ESTADO_PAREJA { get; set; }
-        public DateOnly FEC_NAC_HIJO { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FEC_NAC_HIJO { get; set; }
         public bool CRIOTERAPIA { get; set; }
         public bool BIOPASIS { get; set; }
         public bool THERMOCUAGULACION { get; set; }

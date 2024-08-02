@@ -15,8 +15,12 @@ namespace BACKANFAMAPI.Models
 
         public int COD_REFERENCIAS { get; set; }
         public string INFO_ATENCION { get; set; } = null!;
-        public DateOnly FECHA { get; set; }
-        public DateOnly FECHA_EGRESO { get; set; }
+
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA { get; set; }
+
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_EGRESO { get; set; }
         public string DIAGNOSTICO { get; set; } = null!;
         public string EXAMENES_PREVIOS { get; set; } = null!;
         public string CONTRAREFERENCIA { get; set; } = null!;

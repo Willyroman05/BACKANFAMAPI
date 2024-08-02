@@ -10,7 +10,8 @@ namespace BACKANFAMAPI.Models
         public string PRIMER_APELLIDO { get; set; }
         public string SEGUNDO_APELLIDO { get; set; }
         public string CEDULA { get; set; }
-        public DateOnly FECHA_NAC { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_NAC { get; set; }
         public int EDAD { get; set; }
         public string ESCOLARIDAD { get; set; }
         public string PROFESION { get; set; }
@@ -22,7 +23,8 @@ namespace BACKANFAMAPI.Models
         public double PESO { get; set; }
         public double TALLA { get; set; }
         public double IMC { get; set; }
-        public DateOnly FECHA_INGRESO { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_INGRESO { get; set; }
         public string CENTRO { get; set; }
         public string USUARIA { get; set; }
         public string NOMBRE_DEPARTAMENTO { get; set; }

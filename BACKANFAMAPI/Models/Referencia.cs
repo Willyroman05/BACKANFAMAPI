@@ -12,9 +12,9 @@ public partial class Referencia
     
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fecha { get; set; }
+    public DateOnly? Fecha { get; set; }
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly FechaEgreso { get; set; }
+    public DateOnly? FechaEgreso { get; set; }
 
     public string Diagnostico { get; set; } = null!;
 

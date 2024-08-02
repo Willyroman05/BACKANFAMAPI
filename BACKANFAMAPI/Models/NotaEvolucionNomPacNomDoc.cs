@@ -14,8 +14,8 @@ namespace BACKANFAMAPI.Models
 
         public int COD_NOTA { get; set; }
         public int NUMERO_NOTA { get; set; }
-
-        public DateOnly FECHA { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA { get; set; }
 
         public string HORA { get; set; } = null!;
 

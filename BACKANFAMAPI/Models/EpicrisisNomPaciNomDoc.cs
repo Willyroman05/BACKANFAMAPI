@@ -14,15 +14,16 @@ namespace BACKANFAMAPI.Models
 
 
         public int COD_EPICRISIS { get; set; }
-        public DateOnly FECHA { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA { get; set; }
 
         public string HORA { get; set; } = null!;
 
-       
-        public DateOnly FECHA_INGRESO { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_INGRESO { get; set; }
 
-        
-        public DateOnly FECHA_EGRESO { get; set; }
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
+        public DateOnly? FECHA_EGRESO { get; set; }
 
         public string DIAG_INGRESO { get; set; } = null!;
 

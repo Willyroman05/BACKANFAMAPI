@@ -28,7 +28,7 @@ namespace BACKANFAMAPI.Models
         public bool ALTO_RIESGO { get; set; }
 
         [JsonConverter(typeof(DateOnlyJsonConverter))]
-        public DateOnly FECHA { get; set; }
+        public DateOnly? FECHA { get; set; }
 
         public int NUM_CITA { get; set; }
 

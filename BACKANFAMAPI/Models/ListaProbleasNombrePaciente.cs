@@ -9,7 +9,7 @@ namespace BACKANFAMAPI.Models
         public int NUMERO_NOTA { get; set; }
 
         [JsonConverter(typeof(DateOnlyJsonConverter))]
-        public DateOnly FECHA { get; set; }
+        public DateOnly? FECHA { get; set; }
        
         public string NOMBRE_PROBLEMA { get; set; } = null!;
 

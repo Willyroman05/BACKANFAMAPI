@@ -9,15 +9,15 @@ public partial class Epicrisis
     public int CodEpicrisis { get; set; }
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fecha { get; set; }
+    public DateOnly? Fecha { get; set; }
 
     public string Hora { get; set; } = null!;
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly FechaIngreso { get; set; }
+    public DateOnly? FechaIngreso { get; set; }
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly FechaEgreso { get; set; }
+    public DateOnly? FechaEgreso { get; set; }
 
     public string DiagIngreso { get; set; } = null!;
 

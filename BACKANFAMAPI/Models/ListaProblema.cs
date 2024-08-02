@@ -11,7 +11,7 @@ public partial class ListaProblema
     public int NumeroNota { get; set; }
 
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fecha { get; set; }
+    public DateOnly? Fecha { get; set; }
 
     public string NombreProblema { get; set; } = null!;
 

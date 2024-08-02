@@ -10,7 +10,7 @@ public partial class NotaEvolucion
 
     public int NumeroNota { get; set; }
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fecha { get; set; }
+    public DateOnly? Fecha { get; set; }
 
     public string Hora { get; set; } = null!;
 

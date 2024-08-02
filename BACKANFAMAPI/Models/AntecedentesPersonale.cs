@@ -26,7 +26,7 @@ public partial class AntecedentesPersonale
 
     public int? Cesarea { get; set; }
     [JsonConverter(typeof(DateOnlyJsonConverter))]
-    public DateOnly Fum { get; set; }
+    public DateOnly? Fum { get; set; }
 
     public int? Sa { get; set; }
 
@@ -51,7 +51,7 @@ public partial class AntecedentesPersonale
     public int? CigarrosDia { get; set; }
 
     public bool EstadoPareja { get; set; }
-
+    [JsonConverter(typeof(DateOnlyJsonConverter))]
     public DateOnly? FecNacHijo { get; set; }
 
     public bool? Crioterapia { get; set; }
