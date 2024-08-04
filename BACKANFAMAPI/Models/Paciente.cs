@@ -47,7 +47,9 @@ public partial class Paciente
     public string Centro { get; set; } = null!;
 
     public string Usuaria { get; set; } = null!;
-   // public bool IsEdited { get; set; } = false;
+
+    public bool Estado { get; set; }
+    // public bool IsEdited { get; set; } = false;
     /*
   //  [JsonIgnore]
     public virtual Departamento CodDepartamentoNavigation { get; set; } = null!;

@@ -19,8 +19,9 @@ public partial class Doctor
 
 
     public string? CLINICA { get; set; }
+    public bool Estado { get; set; }
 
-  //  public bool IsEdited { get; set; } = false;
+    //  public bool IsEdited { get; set; } = false;
     /*
     public virtual ICollection<Epicrisis> Epicrises { get; set; } = new List<Epicrisis>();
 

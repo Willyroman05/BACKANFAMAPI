@@ -437,7 +437,7 @@ public partial class AnfamDataBaseContext : DbContext
                .HasMaxLength(50)
                .IsUnicode(false)
                .HasColumnName("CLINICA");
-
+            entity.Property(e => e.Estado).HasColumnName("Estado");
         });
 
         modelBuilder.Entity<EmbarazoActual>(entity =>
@@ -734,6 +734,7 @@ public partial class AnfamDataBaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("USUARIA");
+            entity.Property(e => e.Estado).HasColumnName("Estado");
             /*
            entity.HasOne(d => d.CodDepartamentoNavigation).WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.CodDepartamento)
