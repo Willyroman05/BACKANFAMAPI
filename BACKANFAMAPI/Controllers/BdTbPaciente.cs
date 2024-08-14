@@ -226,7 +226,27 @@ namespace BACKANFAMAPI.Controllers
             return PacienteUnidos;
         }
 
-        [HttpGet("Buscarpacienteunidosnombre")]
+        [HttpGet("buscarpacienteunidoscentro")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Getcentro([FromQuery] string CENTRO)
+        {
+
+
+            if (string.IsNullOrEmpty(CENTRO))
+            {
+                return BadRequest("El primer nombre y primer apellido del paciente es obligatorio.");
+            }
+
+            var resultados = await _context.PPaciente_Unidos_centro(CENTRO);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el primer nombre y primer apellido del paciente proporcionado.");
+            }
+            return Ok(resultados);
+
+        }
+
+        [HttpGet("buscarpacientesunidosnombre")]
         public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Get([FromQuery] string PRIMER_NOMBRE, string PRIMER_APELLIDO)
         {
 

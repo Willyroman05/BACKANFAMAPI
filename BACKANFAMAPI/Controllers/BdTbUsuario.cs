@@ -161,7 +161,13 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest("La nueva contraseña debe tener al menos 6 caracteres.");
             }
-            
+
+            // Verificar que la nueva contraseña y su confirmación coincidan
+            if (model.NuevaContraseña != model.ConfirmarContraseña)
+            {
+                return BadRequest("La nueva contraseña y la confirmación no coinciden.");
+            }
+
             // Actualizar la contraseña del usuario
             usuario.Contraseña = model.NuevaContraseña;
 
@@ -185,7 +191,6 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(new { message = "Contraseña actualizada correctamente." });
         }
-
 
 
     }

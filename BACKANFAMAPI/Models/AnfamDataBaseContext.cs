@@ -73,6 +73,7 @@ public partial class AnfamDataBaseContext : DbContext
         var result = await this.ListaProbleasNombrePaciente.FromSqlRaw("EXEC PBuscarPacienteNombre_Listaproblema @NUM_EXPEDIENTE", param).ToListAsync();
         return result;
     }
+
     public async Task<List<ListaProbleasNombrePaciente>> PBuscarPacientePorNombres_Listaproblema(string PRIMER_NOMBRE, string PRIMER_APELLIDO)
     {
         var param = new SqlParameter("@PRIMER_NOMBRE", PRIMER_NOMBRE ?? (object)DBNull.Value);
@@ -167,6 +168,12 @@ public partial class AnfamDataBaseContext : DbContext
         var param2 = new SqlParameter("@PRIMER_APELLIDO", PRIMER_APELLIDO ?? (object)DBNull.Value);
         var result = await this.PacienteUnidos.FromSqlRaw("EXEC PPaciente_Unidos_PacienteNombre @PRIMER_NOMBRE, @PRIMER_APELLIDO", param, param2).ToListAsync();
 
+        return result;
+    }
+    public async Task<List<PacienteUnidos>> PPaciente_Unidos_centro(string CENTRO)
+    {
+        var param = new SqlParameter("@CENTRO", CENTRO ?? (object)DBNull.Value);
+        var result = await this.PacienteUnidos.FromSqlRaw("EXEC PPaciente_Unidos_centro @CENTRO", param).ToListAsync();
         return result;
     }
 
