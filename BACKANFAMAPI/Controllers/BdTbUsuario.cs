@@ -2,6 +2,7 @@
 using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -49,14 +50,47 @@ namespace BACKANFAMAPI.Controllers
         [HttpDelete("eliminar/{CodAdmin}")]
         public async Task<IActionResult> Delete(int CodAdmin)
         {
+            // Encuentra el usuario que se va a eliminar
             var elemento = await _context.Usuarios.FindAsync(CodAdmin);
 
             if (elemento == null)
             {
                 return NotFound();
             }
-            _context.Usuarios.Remove(elemento);
-            await _context.SaveChangesAsync();
+
+            // Usa una transacción manual para manejar la eliminación e inserción en la bitácora
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Elimina el usuario de la base de datos
+                    _context.Usuarios.Remove(elemento);
+                    await _context.SaveChangesAsync();
+
+                    // Inserta un registro en la tabla de bitácora
+                    // Aquí se usa JsonConvert para serializar el objeto a JSON
+                    var detalles = JsonConvert.SerializeObject(elemento);
+                    var usuario = "Sistema"; // Puedes ajustar esto según cómo determines el usuario en tu sistema
+
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "INSERT INTO Bitacora (Fecha, Informacion, Detalles) VALUES (GETDATE(), 'Datos Eliminado en la  Tabla Usuario', {1})",
+                        usuario,
+                        detalles
+                    );
+
+                    // Confirma la transacción
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    // Deshace la transacción en caso de error
+                    await transaction.RollbackAsync();
+                    // Opcional: manejar el error o lanzar una excepción personalizada
+                    return StatusCode(500, new { message = "Error al eliminar el usuario", error = ex.Message });
+                }
+            }
+
+            // Devuelve un mensaje de éxito
             return Ok(new { message = "Usuario eliminado con éxito" });
         }
         /*
@@ -144,6 +178,7 @@ namespace BACKANFAMAPI.Controllers
             }
 
             var usuario = await _context.Usuarios.FindAsync(CodAdmin);
+            
 
             if (usuario == null)
             {

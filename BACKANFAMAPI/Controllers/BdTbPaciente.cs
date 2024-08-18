@@ -147,63 +147,80 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
+        [HttpGet("buscarporcedula")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Getcedula([FromQuery] string CEDULA)
+        {
+
+            if (string.IsNullOrEmpty(CEDULA))
+            {
+                return BadRequest("El número de Cedula es obligatorio.");
+            }
+
+            var resultados = await _context.PPaciente_Unidosporcedula(CEDULA);
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros para el número de Cedula proporcionado.");
+            }
+            return Ok(resultados);
+        }
 
         //Metodo para listar los datos en la api por cedula
-        [HttpGet("buscarporcedula")]
-        public async Task<ActionResult<Paciente>> GetPacientePorCedula([FromQuery] string cedula)
-        {
-            if (string.IsNullOrEmpty(cedula))
-            {
-                return BadRequest("La cédula es requerida.");
-            }
+        //[HttpGet("buscarporcedula")]
+        //public async Task<ActionResult<Paciente>> GetPacientePorCedula([FromQuery] string cedula)
+        //{
+        //    if (string.IsNullOrEmpty(cedula))
+        //    {
+        //        return BadRequest("La cédula es requerida.");
+        //    }
 
-            var paciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.Cedula == cedula);
+        //    var paciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.Cedula == cedula);
 
-            if (paciente == null)
-            {
-                return NotFound("Paciente no encontrado.");
-            }
+        //    if (paciente == null)
+        //    {
+        //        return NotFound("Paciente no encontrado.");
+        //    }
 
-            return Ok(paciente);
-        }
+        //    return Ok(paciente);
+        //}
 
-        [HttpGet("buscarpornombre")]
-        public async Task<ActionResult<IEnumerable<Paciente>>> GetPacientesPorNombre(
-            [FromQuery] string primerNombre,
-            [FromQuery] string? segundoNombre,
-            [FromQuery] string primerApellido,
-            [FromQuery] string? segundoApellido)
-        {
-            if (string.IsNullOrEmpty(primerNombre) || string.IsNullOrEmpty(primerApellido))
-            {
-                return BadRequest("PrimerNombre y PrimerApellido son requeridos.");
-            }
+        //[HttpGet("buscarpornombre")]
+        //public async Task<ActionResult<IEnumerable<Paciente>>> GetPacientesPorNombre(
+        //    [FromQuery] string primerNombre,
+        //    [FromQuery] string? segundoNombre,
+        //    [FromQuery] string primerApellido,
+        //    [FromQuery] string? segundoApellido)
+        //{
+        //    if (string.IsNullOrEmpty(primerNombre) || string.IsNullOrEmpty(primerApellido))
+        //    {
+        //        return BadRequest("PrimerNombre y PrimerApellido son requeridos.");
+        //    }
 
-            var query = _context.Pacientes.AsQueryable();
+        //    var query = _context.Pacientes.AsQueryable();
 
-            query = query.Where(p => p.PrimerNombre == primerNombre && p.PrimerApellido == primerApellido);
+        //    query = query.Where(p => p.PrimerNombre == primerNombre && p.PrimerApellido == primerApellido);
 
-            if (!string.IsNullOrEmpty(segundoNombre))
-            {
-                query = query.Where(p => p.SegundoNombre == segundoNombre);
-            }
+        //    if (!string.IsNullOrEmpty(segundoNombre))
+        //    {
+        //        query = query.Where(p => p.SegundoNombre == segundoNombre);
+        //    }
 
-            if (!string.IsNullOrEmpty(segundoApellido))
-            {
-                query = query.Where(p => p.SegundoApellido == segundoApellido);
-            }
+        //    if (!string.IsNullOrEmpty(segundoApellido))
+        //    {
+        //        query = query.Where(p => p.SegundoApellido == segundoApellido);
+        //    }
 
-            var pacientes = await query.ToListAsync();
+        //    var pacientes = await query.ToListAsync();
 
-            if (!pacientes.Any())
-            {
-                return NotFound("No se encontraron pacientes con los criterios proporcionados.");
-            }
+        //    if (!pacientes.Any())
+        //    {
+        //        return NotFound("No se encontraron pacientes con los criterios proporcionados.");
+        //    }
 
-            return Ok(pacientes);
-        }
+        //    return Ok(pacientes);
+        //}
 
-      
+
         [HttpGet("Listarnombredepartamento")]
 
         public async Task<List<PacienteDepartamento>> GetPacienteDepartamentoAsync()

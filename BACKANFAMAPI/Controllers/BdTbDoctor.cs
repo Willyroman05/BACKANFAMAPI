@@ -1,6 +1,7 @@
 ﻿using BACKANFAMAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace BACKANFAMAPI.Controllers
 {
@@ -34,16 +35,52 @@ namespace BACKANFAMAPI.Controllers
         [HttpDelete("eliminar/{CodDoctor}")]
         public async Task<IActionResult> Delete(string CodDoctor)
         {
+            // Encuentra el doctor que se va a eliminar
             var elemento = await _context.Doctors.FindAsync(CodDoctor);
 
             if (elemento == null)
             {
                 return NotFound();
             }
-            _context.Doctors.Remove(elemento);
-            await _context.SaveChangesAsync();
+
+            // Usa una transacción manual para manejar la eliminación e inserción en la bitácora
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Elimina el doctor de la base de datos
+                    _context.Doctors.Remove(elemento);
+                    await _context.SaveChangesAsync();
+
+                    // Inserta un registro en la tabla de bitácora
+                    // Serializa el objeto eliminado a JSON para guardar en detalles
+                    var detalles = JsonConvert.SerializeObject(elemento);
+                    var usuario = "Sistema"; // Ajusta esto según cómo determines el usuario en tu sistema
+
+                    // Usa parámetros SQL correctamente formateados
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "INSERT INTO Bitacora (Usuario, Fecha, Informacion, Detalles) VALUES (@p0, GETDATE(), @p1, @p2)",
+                        usuario,
+                        "Dato Eliminado en la Tabla Doctor",
+                        detalles
+                    );
+
+                    // Confirma la transacción
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    // Deshace la transacción en caso de error
+                    await transaction.RollbackAsync();
+                    // Manejar el error y devolver un código de estado 500
+                    return StatusCode(500, new { message = "Error al eliminar el doctor", error = ex.Message });
+                }
+            }
+
+            // Devuelve un mensaje de éxito
             return NoContent();
         }
+
         //Metodo para actualizar los datos en la api
         [HttpPut("actualizar/{CodDoctor}")]
         public async Task<IActionResult> PutDoctors(string CodDoctor, Doctor doctor)
@@ -52,24 +89,55 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest();
             }
+
+            // Establece el estado del doctor como modificado
             _context.Entry(doctor).State = EntityState.Modified;
 
-            try
+            // Usa una transacción manual para manejar la actualización e inserción en la bitácora
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!bdtdoctorExists(CodDoctor))
+                try
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    // Guarda los cambios en la base de datos
+                    await _context.SaveChangesAsync();
 
+                    // Inserta un registro en la tabla de bitácora
+                    var detalles = JsonConvert.SerializeObject(doctor);
+                    var usuario = "Sistema"; 
+
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "INSERT INTO Bitacora (Usuario, Fecha, Informacion, Detalles) VALUES (@p0, GETDATE(), @p1, @p2)",
+                        usuario,
+                        "Datos Actualizados en la Tabla Doctor",
+                        detalles
+                    );
+
+                    // Confirma la transacción
+                    await transaction.CommitAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    await transaction.RollbackAsync();
+
+                    if (!bdtdoctorExists(CodDoctor))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Deshace la transacción en caso de error
+                    await transaction.RollbackAsync();
+                    var innerException = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                    return StatusCode(500, new { message = "Error al actualizar el doctor", error = innerException });
+                }
             }
+
+            // Devuelve el objeto actualizado como respuesta
             return Ok(doctor);
         }
 
