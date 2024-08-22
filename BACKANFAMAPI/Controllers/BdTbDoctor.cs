@@ -103,10 +103,11 @@ namespace BACKANFAMAPI.Controllers
 
                     // Inserta un registro en la tabla de bitácora
                     var detalles = JsonConvert.SerializeObject(doctor);
-                    var usuario = "Sistema"; 
+                    var usuario = "Sistema";
 
                     await _context.Database.ExecuteSqlRawAsync(
-                        "INSERT INTO Bitacora (Usuario, Fecha, Informacion, Detalles) VALUES (@p0, GETDATE(), @p1, @p2)",
+                        "INSERT INTO Bitacora (Usuario, Fecha, Hora, Informacion, Detalles) " +
+                        "VALUES (@p0, CONVERT(DATE, GETDATE()), CONVERT(TIME, GETDATE()), @p1, @p2)",
                         usuario,
                         "Datos Actualizados en la Tabla Doctor",
                         detalles
@@ -114,19 +115,15 @@ namespace BACKANFAMAPI.Controllers
 
                     // Confirma la transacción
                     await transaction.CommitAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    await transaction.RollbackAsync();
 
+                    // Verifica si el doctor existe
                     if (!bdtdoctorExists(CodDoctor))
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    // Devuelve una respuesta exitosa
+                    return Ok(new { message = "Doctor actualizado correctamente" });
                 }
                 catch (Exception ex)
                 {

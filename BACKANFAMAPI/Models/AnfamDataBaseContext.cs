@@ -30,7 +30,7 @@ public partial class AnfamDataBaseContext : DbContext
     public virtual DbSet<Departamento> Departamentos { get; set; }
 
     public virtual DbSet<Doctor> Doctors { get; set; }
-
+    public virtual DbSet<Bitacora> Bitacora { get; set; }
     public virtual DbSet<EmbarazoActual> EmbarazoActuals { get; set; }
 
     public virtual DbSet<Epicrisis> Epicrises { get; set; }
@@ -73,7 +73,12 @@ public partial class AnfamDataBaseContext : DbContext
         var result = await this.ListaProbleasNombrePaciente.FromSqlRaw("EXEC PBuscarPacienteNombre_Listaproblema @NUM_EXPEDIENTE", param).ToListAsync();
         return result;
     }
-
+    public async Task<List<Bitacora>> PBuscarBitacoraUsuario(string Usuario)
+    {
+        var param = new SqlParameter("@Usuario", Usuario ?? (object)DBNull.Value);
+        var result = await this.Bitacora.FromSqlRaw("EXEC PBuscarBitacoraUsuario @Usuario", param).ToListAsync();
+        return result;
+    }
     public async Task<List<ListaProbleasNombrePaciente>> PBuscarPacientePorNombres_Listaproblema(string PRIMER_NOMBRE, string PRIMER_APELLIDO)
     {
         var param = new SqlParameter("@PRIMER_NOMBRE", PRIMER_NOMBRE ?? (object)DBNull.Value);
@@ -884,6 +889,40 @@ public partial class AnfamDataBaseContext : DbContext
      
 
           
+        });
+        modelBuilder.Entity<Bitacora>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Bitacora");
+
+            entity.ToTable("Bitacora");
+
+            entity.Property(e => e.Id)
+                .HasColumnName("ID")
+                .ValueGeneratedOnAdd(); // IDENTITY(1,1) equivalente
+
+            entity.Property(e => e.Usuario)
+                .IsRequired() // Assuming Usuario should always have a value
+                .HasMaxLength(100) // Adjusted max length, use NVARCHAR(MAX) if no length limit
+                .IsUnicode(false)
+                .HasColumnName("USUARIO");
+
+            entity.Property(e => e.Fecha)
+                .HasColumnName("FECHA")
+                .HasColumnType("DATE"); // DATE type for Fecha column
+
+            entity.Property(e => e.Hora)
+                .HasColumnName("HORA")
+                .HasColumnType("TIME"); // TIME type for Hora column
+
+            entity.Property(e => e.Informacion)
+                .HasMaxLength(500) // Adjusted max length, use NVARCHAR(MAX) if no length limit
+                .IsUnicode(false)
+                .HasColumnName("INFORMACION");
+
+            entity.Property(e => e.Detalles)
+                .HasMaxLength(1000) // Adjusted max length, use NVARCHAR(MAX) if no length limit
+                .IsUnicode(false)
+                .HasColumnName("DETALLES");
         });
 
         OnModelCreatingPartial(modelBuilder);
