@@ -94,23 +94,40 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Paciente>> PostRol(Paciente paciente)
         {
-            if (paciente.Talla > 0) // Evitar división por cero
+            if (paciente.FechaNac.HasValue)
+            {
+                
+                var today = DateOnly.FromDateTime(DateTime.Today);
+                paciente.Edad = today.Year - paciente.FechaNac.Value.Year;
+
+               
+                if (paciente.FechaNac.Value > today.AddYears(-paciente.Edad))
+                {
+                    paciente.Edad--;
+                }
+            }
+            else
+            {
+                paciente.Edad = 0; 
+            }
+
+            if (paciente.Talla > 0)
             {
                 paciente.Imc = paciente.Peso / (paciente.Talla * paciente.Talla);
             }
             else
             {
-                paciente.Imc = null; // Asignar null si Talla es 0 o menor
+                paciente.Imc = null; 
             }
 
             _context.Pacientes.Add(paciente);
             await _context.SaveChangesAsync();
             return Ok(paciente);
-            
         }
 
+
         //Metodo para listar los datos en la api por numeroexpediente
-      
+
         [HttpGet("buscarpornumexpediente")]
         public async Task<ActionResult<Paciente>> GetPacientenumexpediente([FromQuery] string NumExpediente)
         {

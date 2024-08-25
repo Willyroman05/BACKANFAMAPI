@@ -16,8 +16,9 @@ public partial class Usuario
     public string Contraseña { get; set; } = null!;
 
     public int CodRol { get; set; }
+    public bool? Estado { get; set; }
 
-  
+
     //public bool IsEdited { get; set; } = false;
 
     // public virtual Rol CodRolNavigation { get; set; } = null!;

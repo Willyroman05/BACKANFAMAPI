@@ -149,6 +149,10 @@ namespace BACKANFAMAPI.Controllers
             {
                 return Unauthorized(new { message = "Contraseña Incorrecta" });
             }
+            if (usuario.Estado == false)
+            {
+                return Unauthorized(new { message = "Cuenta inhabilitada" });
+            }
 
             return Ok(usuario);
         }
@@ -186,6 +190,8 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest("La nueva contraseña y la confirmación no coinciden.");
             }
+
+
 
             // Actualizar la contraseña del usuario
             usuario.Contraseña = model.NuevaContraseña;
