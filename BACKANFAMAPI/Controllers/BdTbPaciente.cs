@@ -299,6 +299,22 @@ namespace BACKANFAMAPI.Controllers
             return Ok(resultados);
 
         }
+
+
+
+        [HttpGet("listarpacienteunido")]
+        public async Task<ActionResult<IEnumerable<PacienteUnidos>>> Listarpacienteunidos()
+        {
+            var resultados = await _context.Set<PacienteUnidos>()
+                                           .FromSqlRaw("EXEC Listar_pacienteunidos")
+                                           .ToListAsync();
+
+            if (resultados == null || !resultados.Any())
+            {
+                return NotFound("No se encontraron registros.");
+            }
+            return Ok(resultados);
+        }
     }
 
 
