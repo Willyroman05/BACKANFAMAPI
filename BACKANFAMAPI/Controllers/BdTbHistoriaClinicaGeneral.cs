@@ -78,11 +78,42 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostHistoriaClinica(HistoriaClinicaGeneral historiaClinicaGeneral)
         {
+            // Verificar que el número de expediente existe
+            var historialExistente = await _context.HistoriaClinicaGenerals
+                .Where(h => h.NumExpediente == historiaClinicaGeneral.NumExpediente)
+                .ToListAsync();
+
+            // Verificar si no se ha ingresado ninguna cita
+            if (!historialExistente.Any())
+            {
+                return BadRequest(new { message = "No se ha ingresado ninguna cita. Debe ingresar al menos la cita número 1." });
+            }
+
+            // Validar el número de cita
+            if (historialExistente.Any(h => h.NUM_CITA == 1 && historiaClinicaGeneral.NUM_CITA == 1))
+            {
+                return BadRequest(new { message = "Ya se ha ingresado la cita número 1. Debe ingresar la cita número 2." });
+            }
+            else if (historialExistente.Any(h => h.NUM_CITA == 2 && historiaClinicaGeneral.NUM_CITA == 2))
+            {
+                return BadRequest(new { message = "Ya se ha ingresado la cita número 2. Debe ingresar la cita número 3." });
+            }
+            else if (historialExistente.Any(h => h.NUM_CITA == 3 && historiaClinicaGeneral.NUM_CITA == 3))
+            {
+                return BadRequest(new { message = "Ya se ha ingresado la cita número 3. Debe ingresar la cita número 4." });
+            }
+            else if (historialExistente.Any(h => h.NUM_CITA == 4 && historiaClinicaGeneral.NUM_CITA == 4))
+            {
+                return BadRequest(new { message = "Ya se ha ingresado la cita número 4. No se pueden agregar más citas." });
+            }
+
+            // Agregar la nueva cita
             _context.HistoriaClinicaGenerals.Add(historiaClinicaGeneral);
             await _context.SaveChangesAsync();
             return Ok(historiaClinicaGeneral);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
+
+
         /*
         //Metodo para listar los datos en la api por CodDoctor
         [HttpGet("buscarporcoddoctor")]
