@@ -53,21 +53,54 @@ namespace BACKANFAMAPI.Controllers
         }
 
         //Metodo para actualizar los datos en la api
+       
         [HttpPut("actualizar/{NumExpediente}")]
         public async Task<IActionResult> Putpaciente(string NumExpediente, Paciente paciente)
         {
-            if (paciente.Talla > 0) // Evitar división por cero
+            if (paciente.FechaNac.HasValue)
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+
+                // Verificar si la fecha de nacimiento está en el futuro
+                if (paciente.FechaNac.Value > today)
+                {
+                    return BadRequest(new { message = "La fecha de nacimiento no puede estar en el futuro." });
+                }
+
+                // Calcular la edad
+                paciente.Edad = today.Year - paciente.FechaNac.Value.Year;
+
+                // Ajustar la edad si aún no ha cumplido años este año
+                if (today < paciente.FechaNac.Value.AddYears(paciente.Edad))
+                {
+                    paciente.Edad--;
+                }
+
+                // Validar si la edad es menor a 0
+                if (paciente.Edad <= 0)
+                {
+                    return BadRequest(new { message = "La edad no puede ser menor o igual que 0." });
+                }
+            }
+            else
+            {
+                paciente.Edad = 0;
+            }
+
+            if (paciente.Talla > 0)
             {
                 paciente.Imc = paciente.Peso / (paciente.Talla * paciente.Talla);
             }
             else
             {
-                paciente.Imc = null; // Asignar null si Talla es 0 o menor
+                paciente.Imc = null;
             }
+
             if (NumExpediente != paciente.NumExpediente)
             {
-                return BadRequest();
+                return BadRequest(new { message = "El número de expediente no coincide con el proporcionado." });
             }
+
             _context.Entry(paciente).State = EntityState.Modified;
 
             try
@@ -84,11 +117,10 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
+
             return Ok(paciente);
         }
-
 
         //Metodo post en la api
         [HttpPost("post")]
@@ -96,19 +128,32 @@ namespace BACKANFAMAPI.Controllers
         {
             if (paciente.FechaNac.HasValue)
             {
-                
                 var today = DateOnly.FromDateTime(DateTime.Today);
+
+                // Verificar si la fecha de nacimiento está en el futuro
+                if (paciente.FechaNac.Value > today)
+                {
+                    return BadRequest(new { message = "La fecha de nacimiento no puede estar en el futuro." });
+                }
+
+                // Calcular la edad
                 paciente.Edad = today.Year - paciente.FechaNac.Value.Year;
 
-               
-                if (paciente.FechaNac.Value > today.AddYears(-paciente.Edad))
+                // Ajustar la edad si aún no ha cumplido años este año
+                if (today < paciente.FechaNac.Value.AddYears(paciente.Edad))
                 {
                     paciente.Edad--;
+                }
+
+                // Validar si la edad es menor a 0 (aunque con la verificación anterior esto debería estar cubierto)
+                if (paciente.Edad <= 0)
+                {
+                    return BadRequest(new { message = "La edad no puede ser menor o igual que 0." });
                 }
             }
             else
             {
-                paciente.Edad = 0; 
+                paciente.Edad = 0;
             }
 
             if (paciente.Talla > 0)
@@ -117,7 +162,7 @@ namespace BACKANFAMAPI.Controllers
             }
             else
             {
-                paciente.Imc = null; 
+                paciente.Imc = null;
             }
 
             _context.Pacientes.Add(paciente);
