@@ -90,6 +90,13 @@ namespace BACKANFAMAPI.Controllers
                 return BadRequest();
             }
 
+            // Obtén el estado original del doctor desde la base de datos
+            var originalDoctor = await _context.Doctors.AsNoTracking().FirstOrDefaultAsync(d => d.CodDoctor == CodDoctor);
+            if (originalDoctor == null)
+            {
+                return NotFound();
+            }
+
             // Establece el estado del doctor como modificado
             _context.Entry(doctor).State = EntityState.Modified;
 
@@ -101,10 +108,42 @@ namespace BACKANFAMAPI.Controllers
                     // Guarda los cambios en la base de datos
                     await _context.SaveChangesAsync();
 
-                    // Inserta un registro en la tabla de bitácora
-                    var detalles = JsonConvert.SerializeObject(doctor);
+                    // Compara los valores originales con los nuevos y captura los cambios
+                    var cambios = new List<string>();
+
+                    if (originalDoctor.PrimerNombred != doctor.PrimerNombred)
+                    {
+                        cambios.Add($"PrimerNombred: '{originalDoctor.PrimerNombred}' a '{doctor.PrimerNombred}'");
+                    }
+                    if (originalDoctor.SegundoNombre != doctor.SegundoNombre)
+                    {
+                        cambios.Add($"SegundoNombre: '{originalDoctor.SegundoNombre}' a '{doctor.SegundoNombre}'");
+                    }
+                    if (originalDoctor.PrimerApellidod != doctor.PrimerApellidod)
+                    {
+                        cambios.Add($"PrimerApellidod: '{originalDoctor.PrimerApellidod}' a '{doctor.PrimerApellidod}'");
+                    }
+                    if (originalDoctor.SegundoApellido != doctor.SegundoApellido)
+                    {
+                        cambios.Add($"SegundoApellido: '{originalDoctor.SegundoApellido}' a '{doctor.SegundoApellido}'");
+                    }
+                    if (originalDoctor.CEDULA != doctor.CEDULA)
+                    {
+                        cambios.Add($"CEDULA: '{originalDoctor.CEDULA}' a '{doctor.CEDULA}'");
+                    }
+                    if (originalDoctor.CLINICA != doctor.CLINICA)
+                    {
+                        cambios.Add($"CLINICA: '{originalDoctor.CLINICA}' a '{doctor.CLINICA}'");
+                    }
+                    if (originalDoctor.Estado != doctor.Estado)
+                    {
+                        cambios.Add($"Estado: '{originalDoctor.Estado}' a '{doctor.Estado}'");
+                    }
+
+                    var detalles = cambios.Count > 0 ? string.Join(", ", cambios) : "No hubo cambios significativos";
                     var usuario = "Sistema";
 
+                    // Inserta un registro en la tabla de bitácora con los detalles específicos de los cambios
                     await _context.Database.ExecuteSqlRawAsync(
                         "INSERT INTO Bitacora (Usuario, Fecha, Hora, Informacion, Detalles) " +
                         "VALUES (@p0, CONVERT(DATE, GETDATE()), CONVERT(TIME, GETDATE()), @p1, @p2)",
@@ -116,14 +155,8 @@ namespace BACKANFAMAPI.Controllers
                     // Confirma la transacción
                     await transaction.CommitAsync();
 
-                    // Verifica si el doctor existe
-                    if (!bdtdoctorExists(CodDoctor))
-                    {
-                        return NotFound();
-                    }
-
                     // Devuelve una respuesta exitosa
-                    return Ok(new { message = "Doctor actualizado correctamente" });
+                    return Ok(new { message = "Doctor actualizado correctamente", detalles });
                 }
                 catch (Exception ex)
                 {
@@ -133,10 +166,8 @@ namespace BACKANFAMAPI.Controllers
                     return StatusCode(500, new { message = "Error al actualizar el doctor", error = innerException });
                 }
             }
-
-            // Devuelve el objeto actualizado como respuesta
-            return Ok(doctor);
         }
+
 
 
         //Metodo post en la api

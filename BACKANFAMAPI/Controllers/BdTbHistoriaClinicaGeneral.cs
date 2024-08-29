@@ -88,6 +88,7 @@ namespace BACKANFAMAPI.Controllers
                 if (historiaClinicaGeneral.NUM_CITA == 1)
                 {
                     return BadRequest(new { message = "Ya se ha ingresado la cita número 1. Debe ingresar la cita número 2." });
+
                 }
             }
             else if (historialExistente.Any(h => h.NUM_CITA == 2))
