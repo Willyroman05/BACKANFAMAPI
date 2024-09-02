@@ -137,65 +137,92 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginModel login)
         {
-            var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Correo == login.Correo);
+            string correoUsuario = login.Correo; // Almacena el correo del usuario
 
-            if (usuario == null)
+            // Inicia una transacción para asegurar que todas las operaciones se completen correctamente.
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                return Unauthorized(new { message = "Correo electrónico no válido" });
-            }
+                try
+                {
+                    // Busca al usuario en la base de datos por correo electrónico.
+                    var usuario = await _context.Usuarios
+                        .FirstOrDefaultAsync(u => u.Correo == login.Correo);
 
-            if (usuario.Contraseña != login.Contraseña)
-            {
-                return Unauthorized(new { message = "Contraseña Incorrecta" });
-            }
-            if (usuario.Estado == false)
-            {
-                return Unauthorized(new { message = "Cuenta inhabilitada" });
-            }
+                    if (usuario == null)
+                    {
+                        return Unauthorized(new { message = "Correo electrónico no válido" });
+                    }
 
-            return Ok(usuario);
+                    if (usuario.Contraseña != login.Contraseña)
+                    {
+                        return Unauthorized(new { message = "Contraseña Incorrecta" });
+                    }
+
+                    if (usuario.Estado == false)
+                    {
+                        return Unauthorized(new { message = "Cuenta inhabilitada" });
+                    }
+
+                    // En este punto, el login es exitoso, por lo que se registra en la bitácora.
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "INSERT INTO Bitacora (Usuario, Fecha, Hora, Informacion, Detalles) " +
+                        "VALUES (@p0, CONVERT(DATE, GETDATE()), CONVERT(TIME, GETDATE()), @p1, @p2)",
+                        correoUsuario,
+                        "Login exitoso",
+                        "El usuario ha iniciado sesión correctamente"
+                    );
+
+                    // Confirma la transacción.
+                    await transaction.CommitAsync();
+
+                    return Ok(usuario);
+                }
+                catch (Exception ex)
+                {
+                    // Deshace la transacción en caso de error.
+                    await transaction.RollbackAsync();
+                    var innerException = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                    return StatusCode(500, new { message = "Error al procesar el login", error = innerException });
+                }
+            }
         }
+
 
         [HttpPut("actualizarcontraseña/{CodAdmin}")]
         public async Task<IActionResult> PutPassword(int CodAdmin, [FromBody] ActualizarContraseñaModel model)
         {
             if (CodAdmin != model.CodAdmin)
             {
-                return BadRequest("El ID del usuario no coincide.");
+                return BadRequest(new { message = "El ID del usuario no coincide." });
             }
 
             var usuario = await _context.Usuarios.FindAsync(CodAdmin);
-            
 
             if (usuario == null)
             {
-                return NotFound("Usuario no encontrado.");
+                return NotFound(new { message = "Usuario no encontrado." });
             }
 
             // Verificar la contraseña actual
             if (usuario.Contraseña != model.ContraseñaActual)
             {
-                return Unauthorized("La contraseña actual es incorrecta.");
+                return Unauthorized(new { message = "La contraseña actual es incorrecta." });
             }
 
             // Validar la nueva contraseña
             if (string.IsNullOrEmpty(model.NuevaContraseña) || model.NuevaContraseña.Length < 6)
             {
-                return BadRequest("La nueva contraseña debe tener al menos 6 caracteres.");
+                return BadRequest(new { message = "La nueva contraseña debe tener al menos 6 caracteres." });
             }
 
             // Verificar que la nueva contraseña y su confirmación coincidan
             if (model.NuevaContraseña != model.ConfirmarContraseña)
             {
-                return BadRequest("La nueva contraseña y la confirmación no coinciden.");
+                return BadRequest(new { message = "La nueva contraseña y la confirmación no coinciden." });
             }
-
-
 
             // Actualizar la contraseña del usuario
             usuario.Contraseña = model.NuevaContraseña;
-
             _context.Entry(usuario).State = EntityState.Modified;
 
             try
@@ -206,7 +233,7 @@ namespace BACKANFAMAPI.Controllers
             {
                 if (!usuarioExists(CodAdmin))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "Usuario no encontrado." });
                 }
                 else
                 {
