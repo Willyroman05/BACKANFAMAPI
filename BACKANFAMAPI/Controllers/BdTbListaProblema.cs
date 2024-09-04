@@ -62,8 +62,15 @@ namespace BACKANFAMAPI.Controllers
         {
             if (CodProblemas != listaProblema.CodProblemas)
             {
-                return BadRequest();
+                return BadRequest(new { message = "El código de problemas no coincide." });
             }
+
+            // Validar que la fecha no sea futura
+            if (listaProblema.Fecha.HasValue && listaProblema.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser una fecha futura." });
+            }
+
             _context.Entry(listaProblema).State = EntityState.Modified;
 
             try
@@ -82,13 +89,10 @@ namespace BACKANFAMAPI.Controllers
                 }
             }
 
-            // Retorna los datos actualizados
             return Ok(listaProblema);
         }
 
 
-        //Metodo post en la api
-       
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostListaProblema(ListaProblema listaProblema)
         {
@@ -96,7 +100,13 @@ namespace BACKANFAMAPI.Controllers
 
             if (existingExpediente == null)
             {
-                return BadRequest(new { message = "El Numero de Expediente proporcionado no existe." });
+                return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
+            }
+
+            // Validar que la fecha no sea futura
+            if (listaProblema.Fecha.HasValue && listaProblema.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser una fecha futura." });
             }
 
             _context.ListaProblemas.Add(listaProblema);

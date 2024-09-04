@@ -60,7 +60,7 @@ namespace BACKANFAMAPI.Controllers
             return NoContent();
         }
 
-        
+
 
 
         //Metodo para actualizar los datos en la api
@@ -71,6 +71,15 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest();
             }
+
+            // Validar que ninguna de las fechas sea futura
+            if ((epicrisis.Fecha.HasValue && epicrisis.Fecha.Value > DateOnly.FromDateTime(DateTime.Today)) ||
+                (epicrisis.FechaIngreso.HasValue && epicrisis.FechaIngreso.Value > DateOnly.FromDateTime(DateTime.Today)) ||
+                (epicrisis.FechaEgreso.HasValue && epicrisis.FechaEgreso.Value > DateOnly.FromDateTime(DateTime.Today)))
+            {
+                return BadRequest(new { message = "Las fechas no pueden ser futuras." });
+            }
+
             _context.Entry(epicrisis).State = EntityState.Modified;
 
             try
@@ -87,7 +96,6 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
             return NoContent();
         }
@@ -97,10 +105,17 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostEpicrisis(Epicrisis epicrisis)
         {
+            // Validar que ninguna de las fechas sea futura
+            if ((epicrisis.Fecha.HasValue && epicrisis.Fecha.Value > DateOnly.FromDateTime(DateTime.Today)) ||
+                (epicrisis.FechaIngreso.HasValue && epicrisis.FechaIngreso.Value > DateOnly.FromDateTime(DateTime.Today)) ||
+                (epicrisis.FechaEgreso.HasValue && epicrisis.FechaEgreso.Value > DateOnly.FromDateTime(DateTime.Today)))
+            {
+                return BadRequest(new { message = "Las fechas no pueden ser futuras." });
+            }
+
             _context.Epicrises.Add(epicrisis);
             await _context.SaveChangesAsync();
             return Ok(epicrisis);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
 

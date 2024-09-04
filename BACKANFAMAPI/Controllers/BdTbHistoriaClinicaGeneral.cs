@@ -52,6 +52,13 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest();
             }
+
+            // Validar que la fecha no sea futura
+            if (historiaClinicaGeneral.Fecha.HasValue && historiaClinicaGeneral.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser futura." });
+            }
+
             _context.Entry(historiaClinicaGeneral).State = EntityState.Modified;
 
             try
@@ -68,7 +75,6 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
             return NoContent();
         }
@@ -78,7 +84,13 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostHistoriaClinica(HistoriaClinicaGeneral historiaClinicaGeneral)
         {
-            // Verificar que el número de expediente existe
+            // Validar que la fecha no sea futura
+            if (historiaClinicaGeneral.Fecha.HasValue && historiaClinicaGeneral.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser futura." });
+            }
+
+            // Verificar que el número de expediente existe y las citas
             var historialExistente = await _context.HistoriaClinicaGenerals
                 .Where(h => h.NumExpediente == historiaClinicaGeneral.NumExpediente)
                 .ToListAsync();
@@ -88,7 +100,6 @@ namespace BACKANFAMAPI.Controllers
                 if (historiaClinicaGeneral.NUM_CITA == 1)
                 {
                     return BadRequest(new { message = "Ya se ha ingresado la cita número 1. Debe ingresar la cita número 2." });
-
                 }
             }
             else if (historialExistente.Any(h => h.NUM_CITA == 2))

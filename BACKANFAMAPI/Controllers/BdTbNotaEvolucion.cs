@@ -63,8 +63,15 @@ namespace BACKANFAMAPI.Controllers
             }
             else
             {
-                notaEvolucion.Imc = 0; // Asignar null si Talla es 0 o menor
+                notaEvolucion.Imc = 0; // Asignar 0 si Talla es 0 o menor
             }
+
+            // Validar que la fecha no sea futura
+            if (notaEvolucion.Fecha.HasValue && notaEvolucion.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser una fecha futura." });
+            }
+
             if (CodNota != notaEvolucion.CodNota)
             {
                 return BadRequest();
@@ -85,7 +92,6 @@ namespace BACKANFAMAPI.Controllers
                 {
                     throw;
                 }
-
             }
             return Ok(notaEvolucion);
         }
@@ -101,33 +107,39 @@ namespace BACKANFAMAPI.Controllers
             }
             else
             {
-                notaEvolucion.Imc = 0; // Asignar null si Talla es 0 o menor
+                notaEvolucion.Imc = 0; // Asignar 0 si Talla es 0 o menor
             }
+
+            // Validar que la fecha no sea futura
+            if (notaEvolucion.Fecha.HasValue && notaEvolucion.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
+            {
+                return BadRequest(new { message = "La fecha no puede ser una fecha futura." });
+            }
+
             _context.NotaEvolucions.Add(notaEvolucion);
             await _context.SaveChangesAsync();
             return Ok(notaEvolucion);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
-       /* //Metodo para listar los datos en la api por CodDoctor
-        [HttpGet("buscarporcoddoctor")]
-        public async Task<ActionResult<NotaEvolucion>> GetCodDoctor([FromQuery] string CodDoctor)
-        {
-            if (string.IsNullOrEmpty(CodDoctor))
-            {
-                return BadRequest("El codigo doctor es requerida.");
-            }
+        /* //Metodo para listar los datos en la api por CodDoctor
+         [HttpGet("buscarporcoddoctor")]
+         public async Task<ActionResult<NotaEvolucion>> GetCodDoctor([FromQuery] string CodDoctor)
+         {
+             if (string.IsNullOrEmpty(CodDoctor))
+             {
+                 return BadRequest("El codigo doctor es requerida.");
+             }
 
-            var NotaEvolucion = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
+             var NotaEvolucion = await _context.NotaEvolucions.FirstOrDefaultAsync(p => p.CodDoctor == CodDoctor);
 
-            if (NotaEvolucion == null)
-            {
-                return NotFound("NotaEvolucion no encontrado.");
-            }
+             if (NotaEvolucion == null)
+             {
+                 return NotFound("NotaEvolucion no encontrado.");
+             }
 
-            return Ok(NotaEvolucion);
-        }
-       */
+             return Ok(NotaEvolucion);
+         }
+        */
 
         //Metodo para listar los datos en la api por numeroexpediente
         [HttpGet("buscarpornumexpediente")]
