@@ -105,6 +105,12 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostEpicrisis(Epicrisis epicrisis)
         {
+            var existingExpediente = await _context.Epicrises.FirstOrDefaultAsync(e => e.NumExpediente == epicrisis.NumExpediente);
+
+            if (existingExpediente == null)
+            {
+                return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
+            }
             // Validar que ninguna de las fechas sea futura
             if ((epicrisis.Fecha.HasValue && epicrisis.Fecha.Value > DateOnly.FromDateTime(DateTime.Today)) ||
                 (epicrisis.FechaIngreso.HasValue && epicrisis.FechaIngreso.Value > DateOnly.FromDateTime(DateTime.Today)) ||
