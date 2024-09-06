@@ -93,15 +93,26 @@ namespace BACKANFAMAPI.Controllers
             // Devuelve un mensaje de éxito
             return Ok(new { message = "Usuario eliminado con éxito" });
         }
-        
+
         //Metodo para actualizar los datos en la api
+       
         [HttpPut("actualizar/{CodAdmin}")]
         public async Task<IActionResult> Putusuario(int CodAdmin, Usuario usuario)
         {
             if (CodAdmin != usuario.CodAdmin)
             {
-                return BadRequest();
+                return BadRequest(new { message = "El ID del usuario no coincide." });
             }
+
+            // Verificar si el correo ya está en uso por otro usuario
+            var existeCorreo = await _context.Usuarios
+                .AnyAsync(u => u.Correo == usuario.Correo && u.CodAdmin != CodAdmin);
+
+            if (existeCorreo)
+            {
+                return Unauthorized(new { message = "Correo electrónico no válido" });
+            }
+
             _context.Entry(usuario).State = EntityState.Modified;
 
             try
@@ -112,28 +123,37 @@ namespace BACKANFAMAPI.Controllers
             {
                 if (!usuarioExists(CodAdmin))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "El usuario no existe." });
                 }
                 else
                 {
                     throw;
                 }
-
             }
+
             return NoContent();
         }
+
 
 
         //Metodo post en la api
         [HttpPost("post")]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+            // Verificar si el correo ya está en uso
+            var existeCorreo = await _context.Usuarios
+                .AnyAsync(u => u.Correo == usuario.Correo);
+
+            if (existeCorreo)
+            {
+                return Unauthorized(new { message = "El Codigo doctor ya esta usado" });
+            }
+
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUsuario", new { id = usuario.CodAdmin }, usuario);
         }
-
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginModel login)
         {
@@ -150,7 +170,7 @@ namespace BACKANFAMAPI.Controllers
 
                     if (usuario == null)
                     {
-                        return Unauthorized(new { message = "Correo electrónico no válido" });
+                        return Unauthorized(new { message = "El Codigo doctor ya esta usado" });
                     }
 
                     if (usuario.Contraseña != login.Contraseña)
