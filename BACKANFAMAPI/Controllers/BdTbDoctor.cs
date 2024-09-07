@@ -83,7 +83,7 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para actualizar los datos en la api
         [HttpPut("actualizar/{CodDoctor}")]
-        [HttpPut("actualizar/{CodDoctor}")]
+        
         public async Task<IActionResult> PutDoctors(string CodDoctor, Doctor doctor)
         {
             if (CodDoctor != doctor.CodDoctor)
