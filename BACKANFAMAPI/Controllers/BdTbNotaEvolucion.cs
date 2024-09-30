@@ -107,6 +107,7 @@ namespace BACKANFAMAPI.Controllers
             {
                 return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
             }
+
             if (notaEvolucion.Talla > 0) // Evitar división por cero
             {
                 notaEvolucion.Imc = notaEvolucion.PESO / (notaEvolucion.Talla * notaEvolucion.Talla);
