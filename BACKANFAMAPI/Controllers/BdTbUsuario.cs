@@ -170,17 +170,17 @@ namespace BACKANFAMAPI.Controllers
 
                     if (usuario == null)
                     {
-                        return Unauthorized(new { message = "El Codigo doctor ya esta usado" });
+                        return Unauthorized(new { message = "EL CODIGO MINSA NO ESTA REGISTRADO" });
                     }
 
                     if (usuario.Contraseña != login.Contraseña)
                     {
-                        return Unauthorized(new { message = "Contraseña Incorrecta" });
+                        return Unauthorized(new { message = "CONTRASEÑA INCORRECTA" });
                     }
 
                     if (usuario.Estado == false)
                     {
-                        return Unauthorized(new { message = "Cuenta inhabilitada" });
+                        return Unauthorized(new { message = "CUENTA INHABILITADA" });
                     }
 
                     // En este punto, el login es exitoso, por lo que se registra en la bitácora.
