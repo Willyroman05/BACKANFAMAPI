@@ -101,13 +101,13 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostNotaEvolucion(NotaEvolucion notaEvolucion)
         {
-            var existingExpediente = await _context.NotaEvolucions.FirstOrDefaultAsync(e => e.NumExpediente == notaEvolucion.NumExpediente);
+            var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == notaEvolucion.NumExpediente);
+
 
             if (existingExpediente == null)
             {
                 return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
             }
-
             if (notaEvolucion.Talla > 0) // Evitar división por cero
             {
                 notaEvolucion.Imc = notaEvolucion.PESO / (notaEvolucion.Talla * notaEvolucion.Talla);

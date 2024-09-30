@@ -105,7 +105,7 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostEpicrisis(Epicrisis epicrisis)
         {
-            var existingExpediente = await _context.Epicrises.FirstOrDefaultAsync(e => e.NumExpediente == epicrisis.NumExpediente);
+            var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == epicrisis.NumExpediente);
 
             if (existingExpediente == null)
             {
