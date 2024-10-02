@@ -84,6 +84,12 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostHistoriaClinica(HistoriaClinicaGeneral historiaClinicaGeneral)
         {
+            var existingDoctro = await _context.Doctors.FirstOrDefaultAsync(D => D.CodDoctor == historiaClinicaGeneral.CodDoctor);
+
+            if (existingDoctro == null)
+            {
+                return BadRequest(new { message = "El Codigo Minsa no esta asignado a ningun doctor." });
+            }
             // Validar que la fecha no sea futura
             if (historiaClinicaGeneral.Fecha.HasValue && historiaClinicaGeneral.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
             {

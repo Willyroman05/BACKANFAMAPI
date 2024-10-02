@@ -114,7 +114,7 @@ namespace BACKANFAMAPI.Controllers
             }
             if (existingDoctro == null)
             {
-                return BadRequest(new { message = "El Número Codigo Minsa no existe." });
+                return BadRequest(new { message = "El Codigo Minsa no esta asignado a ningun doctor." });
             }
             // Validar que ninguna de las fechas sea futura
             if ((epicrisis.Fecha.HasValue && epicrisis.Fecha.Value > DateOnly.FromDateTime(DateTime.Today)) ||

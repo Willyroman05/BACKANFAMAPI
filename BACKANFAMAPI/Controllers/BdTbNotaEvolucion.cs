@@ -102,8 +102,13 @@ namespace BACKANFAMAPI.Controllers
         public async Task<ActionResult<Informacion>> PostNotaEvolucion(NotaEvolucion notaEvolucion)
         {
             var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == notaEvolucion.NumExpediente);
+            var existingDoctro = await _context.Doctors.FirstOrDefaultAsync(D => D.CodDoctor == notaEvolucion.CodDoctor);
 
-            
+            if (existingDoctro == null)
+            {
+                return BadRequest(new { message = "El Codigo Minsa no esta asignado a ningun doctor." });
+            }
+
             if (existingExpediente == null)
             {
                 return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
