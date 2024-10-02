@@ -103,7 +103,7 @@ namespace BACKANFAMAPI.Controllers
         {
             var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == notaEvolucion.NumExpediente);
 
-
+            
             if (existingExpediente == null)
             {
                 return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });

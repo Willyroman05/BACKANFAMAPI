@@ -106,10 +106,15 @@ namespace BACKANFAMAPI.Controllers
         public async Task<ActionResult<Informacion>> PostEpicrisis(Epicrisis epicrisis)
         {
             var existingExpediente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == epicrisis.NumExpediente);
+            var existingDoctro = await _context.Doctors.FirstOrDefaultAsync(D => D.CodDoctor == epicrisis.CodDoctor);
 
             if (existingExpediente == null)
             {
                 return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
+            }
+            if (existingDoctro == null)
+            {
+                return BadRequest(new { message = "El Número Codigo Minsa no existe." });
             }
             // Validar que ninguna de las fechas sea futura
             if ((epicrisis.Fecha.HasValue && epicrisis.Fecha.Value > DateOnly.FromDateTime(DateTime.Today)) ||
