@@ -83,50 +83,90 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo para actualizar los datos en la api
         [HttpPut("actualizar/{CodDoctor}")]
-        
         public async Task<IActionResult> PutDoctors(string CodDoctor, Doctor doctor)
         {
             if (CodDoctor != doctor.CodDoctor)
             {
-                return BadRequest(new { message = "El código del doctor no coincide con el parámetro proporcionado." });
+                return BadRequest();
             }
 
-            // Verifica si el código del doctor ya existe en otro registro
-            var existingDoctor = await _context.Doctors.FirstOrDefaultAsync(d => d.CodDoctor == doctor.CodDoctor && d.CodDoctor != CodDoctor);
-            if (existingDoctor != null)
-            {
-                return Conflict(new { message = $"El código {doctor.CodDoctor} ya está registrado por otro doctor." });
-            }
-
+            // Obtén el estado original del doctor desde la base de datos
             var originalDoctor = await _context.Doctors.AsNoTracking().FirstOrDefaultAsync(d => d.CodDoctor == CodDoctor);
             if (originalDoctor == null)
             {
                 return NotFound();
             }
 
+            // Establece el estado del doctor como modificado
             _context.Entry(doctor).State = EntityState.Modified;
 
-            // Transacción para guardar cambios y bitácora (como tienes implementado)
+            // Usa una transacción manual para manejar la actualización e inserción en la bitácora
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
+                    // Guarda los cambios en la base de datos
                     await _context.SaveChangesAsync();
 
-                    // Lógica para registrar cambios en bitácora
+                    // Compara los valores originales con los nuevos y captura los cambios
+                    var cambios = new List<string>();
 
+                    if (originalDoctor.PrimerNombred != doctor.PrimerNombred)
+                    {
+                        cambios.Add($"PrimerNombred: '{originalDoctor.PrimerNombred}' a '{doctor.PrimerNombred}'");
+                    }
+                    if (originalDoctor.SegundoNombre != doctor.SegundoNombre)
+                    {
+                        cambios.Add($"SegundoNombre: '{originalDoctor.SegundoNombre}' a '{doctor.SegundoNombre}'");
+                    }
+                    if (originalDoctor.PrimerApellidod != doctor.PrimerApellidod)
+                    {
+                        cambios.Add($"PrimerApellidod: '{originalDoctor.PrimerApellidod}' a '{doctor.PrimerApellidod}'");
+                    }
+                    if (originalDoctor.SegundoApellido != doctor.SegundoApellido)
+                    {
+                        cambios.Add($"SegundoApellido: '{originalDoctor.SegundoApellido}' a '{doctor.SegundoApellido}'");
+                    }
+                    if (originalDoctor.CEDULA != doctor.CEDULA)
+                    {
+                        cambios.Add($"CEDULA: '{originalDoctor.CEDULA}' a '{doctor.CEDULA}'");
+                    }
+                    if (originalDoctor.CLINICA != doctor.CLINICA)
+                    {
+                        cambios.Add($"CLINICA: '{originalDoctor.CLINICA}' a '{doctor.CLINICA}'");
+                    }
+                    if (originalDoctor.Estado != doctor.Estado)
+                    {
+                        cambios.Add($"Estado: '{originalDoctor.Estado}' a '{doctor.Estado}'");
+                    }
+
+                    var detalles = cambios.Count > 0 ? string.Join(", ", cambios) : "No hubo cambios significativos";
+                    var usuario = "Sistema";
+
+                    // Inserta un registro en la tabla de bitácora con los detalles específicos de los cambios
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "INSERT INTO Bitacora (Usuario, Fecha, Hora, Informacion, Detalles) " +
+                        "VALUES (@p0, CONVERT(DATE, GETDATE()), CONVERT(TIME, GETDATE()), @p1, @p2)",
+                        usuario,
+                        "Datos Actualizados en la Tabla Doctor",
+                        detalles
+                    );
+
+                    // Confirma la transacción
                     await transaction.CommitAsync();
-                    return Ok(new { message = "Doctor actualizado correctamente" });
+
+                    // Devuelve una respuesta exitosa
+                    return Ok(new { message = "Doctor actualizado correctamente", detalles });
                 }
                 catch (Exception ex)
                 {
+                    // Deshace la transacción en caso de error
                     await transaction.RollbackAsync();
                     var innerException = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                     return StatusCode(500, new { message = "Error al actualizar el doctor", error = innerException });
                 }
             }
         }
-
 
 
 
