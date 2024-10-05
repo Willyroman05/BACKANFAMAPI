@@ -110,15 +110,16 @@ namespace BACKANFAMAPI.Controllers
             // Verificar el último número de cita ingresado
             var maxNumCita = historialExistente.Max(h => h.NUM_CITA);
 
-            if (historiaClinicaGeneral.NUM_CITA != maxNumCita + 1)
+            // Si se alcanzan 4 citas, se reinicia desde la 1
+            if (maxNumCita >= 4 && historiaClinicaGeneral.NUM_CITA != 1)
             {
-                return BadRequest(new { message = $"Debe ingresar la cita número {maxNumCita + 1}." });
+                return BadRequest(new { message = "Debe reiniciar el ciclo desde la cita número 1." });
             }
 
-            // Limitar el número máximo de citas
-            if (maxNumCita >= 4)
+            // Si no se han alcanzado 4 citas, el número de cita debe ser secuencial
+            if (maxNumCita < 4 && historiaClinicaGeneral.NUM_CITA != maxNumCita + 1)
             {
-                return BadRequest(new { message = "No se pueden agregar más citas. El máximo permitido es 4." });
+                return BadRequest(new { message = $"Debe ingresar la cita número {maxNumCita + 1}." });
             }
 
             // Agregar la nueva cita
@@ -127,6 +128,7 @@ namespace BACKANFAMAPI.Controllers
 
             return Ok(historiaClinicaGeneral);
         }
+
 
 
 
