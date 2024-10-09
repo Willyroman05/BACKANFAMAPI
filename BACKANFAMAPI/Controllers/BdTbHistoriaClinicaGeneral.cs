@@ -91,38 +91,51 @@ namespace BACKANFAMAPI.Controllers
                 return BadRequest(new { message = "El Código Minsa no está asignado a ningún doctor." });
             }
 
+            // Validar si el paciente existe
+            var existingPaciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.NumExpediente == historiaClinicaGeneral.NumExpediente);
+            if (existingPaciente == null)
+            {
+                return BadRequest(new { message = "El Número de Expediente proporcionado no existe." });
+            }
+
             // Validar que la fecha no sea futura
             if (historiaClinicaGeneral.Fecha.HasValue && historiaClinicaGeneral.Fecha.Value > DateOnly.FromDateTime(DateTime.Today))
             {
                 return BadRequest(new { message = "La fecha no puede ser futura." });
             }
 
-            // Verificar que el número de expediente existe
+            // Verificar que el número de expediente existe en el historial
             var historialExistente = await _context.HistoriaClinicaGenerals
                 .Where(h => h.NumExpediente == historiaClinicaGeneral.NumExpediente)
                 .ToListAsync();
 
+            // Si no hay registros previos, se puede ingresar la primera cita (NUM_CITA = 1)
             if (!historialExistente.Any())
             {
-                return BadRequest(new { message = "No existe un historial clínico con este número de expediente." });
+                if (historiaClinicaGeneral.NUM_CITA != 1)
+                {
+                    return BadRequest(new { message = "No hay citas previas, debe ingresar la cita número 1." });
+                }
             }
-
-            // Verificar el último número de cita ingresado
-            var maxNumCita = historialExistente.Max(h => h.NUM_CITA);
-
-            // Si se alcanzan 4 citas, se reinicia desde la 1
-            if (maxNumCita >= 4 && historiaClinicaGeneral.NUM_CITA != 1)
+            else
             {
-                return BadRequest(new { message = "Debe reiniciar el ciclo desde la cita número 1." });
+                // Verificar el último número de cita ingresado
+                var maxNumCita = historialExistente.Max(h => h.NUM_CITA);
+
+                // Si se alcanzan 4 citas, se reinicia desde la 1
+                if (maxNumCita >= 4 && historiaClinicaGeneral.NUM_CITA != 1)
+                {
+                    return BadRequest(new { message = "Debe reiniciar el ciclo desde la cita número 1." });
+                }
+
+                // Si no se han alcanzado 4 citas, el número de cita debe ser secuencial
+                if (maxNumCita < 4 && historiaClinicaGeneral.NUM_CITA != maxNumCita + 1)
+                {
+                    return BadRequest(new { message = $"Debe ingresar la cita número {maxNumCita + 1}." });
+                }
             }
 
-            // Si no se han alcanzado 4 citas, el número de cita debe ser secuencial
-            if (maxNumCita < 4 && historiaClinicaGeneral.NUM_CITA != maxNumCita + 1)
-            {
-                return BadRequest(new { message = $"Debe ingresar la cita número {maxNumCita + 1}." });
-            }
-
-            // Agregar la nueva cita
+            //Agregar la nueva cita
             _context.HistoriaClinicaGenerals.Add(historiaClinicaGeneral);
             await _context.SaveChangesAsync();
 
