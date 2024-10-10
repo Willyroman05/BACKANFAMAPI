@@ -125,7 +125,7 @@ namespace BACKANFAMAPI.Controllers
                 // Si se alcanzan 4 citas, se reinicia desde la 1
                 if (maxNumCita >= 4 && historiaClinicaGeneral.NUM_CITA != 1)
                 {
-                    return BadRequest(new { message = "Debe reiniciar el ciclo desde la cita número 1." });
+                    return BadRequest(new { message = "Ya exite una Historia clinica , Ingrese siempre ciclo 1." });
                 }
 
                 // Si no se han alcanzado 4 citas, el número de cita debe ser secuencial
