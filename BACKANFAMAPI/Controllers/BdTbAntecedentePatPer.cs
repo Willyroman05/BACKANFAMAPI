@@ -78,10 +78,21 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Paciente>> PostantecedentePatPer(AntecedentePatPer antecedentePatPer)
         {
+            // Verificar si ya existe un antecedente patológico personal con el mismo NumExpediente
+            var existeAntecedente = await _context.AntecedentePatPers
+                .AnyAsync(ap => ap.NumExpediente == antecedentePatPer.NumExpediente);
+
+            // Si ya existe, devolver un error indicando que ya se creó un registro con ese NumExpediente
+            if (existeAntecedente)
+            {
+                return BadRequest(new { message = $"Ya existe un Antecedente Patológico Personal creado con el NumExpediente {antecedentePatPer.NumExpediente}." });
+            }
+
+            // Si no existe, agregar el nuevo antecedente patológico personal
             _context.AntecedentePatPers.Add(antecedentePatPer);
             await _context.SaveChangesAsync();
+
             return Ok(antecedentePatPer);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
         //Metodo para listar los datos en la api por expediente

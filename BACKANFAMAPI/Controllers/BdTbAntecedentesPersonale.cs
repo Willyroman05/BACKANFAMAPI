@@ -77,10 +77,21 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<Informacion>> PostAntecedentesPersonale(AntecedentesPersonale antecedentesPersonale)
         {
+            // Verificar si ya existe un antecedente personal con el mismo NumExpediente
+            var existeAntecedente = await _context.AntecedentesPersonales
+                .AnyAsync(ap => ap.NumExpediente == antecedentesPersonale.NumExpediente);
+
+            // Si ya existe, devolver un error indicando que ya se creó un registro con ese NumExpediente
+            if (existeAntecedente)
+            {
+                return BadRequest(new { message = $"Ya existe un Antecedente Personal creado con el NumExpediente {antecedentesPersonale.NumExpediente}." });
+            }
+
+            // Si no existe, agregar el nuevo antecedente personal
             _context.AntecedentesPersonales.Add(antecedentesPersonale);
             await _context.SaveChangesAsync();
+
             return Ok(antecedentesPersonale);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
 

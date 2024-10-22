@@ -145,7 +145,7 @@ namespace BACKANFAMAPI.Controllers
                     paciente.Edad--;
                 }
 
-                // Validar si la edad es menor a 0 (aunque con la verificación anterior esto debería estar cubierto)
+                // Validar si la edad es menor a 0
                 if (paciente.Edad <= 0)
                 {
                     return BadRequest(new { message = "La edad no puede ser menor o igual que 0." });
@@ -156,6 +156,7 @@ namespace BACKANFAMAPI.Controllers
                 paciente.Edad = 0;
             }
 
+            // Calcular IMC si la talla es mayor a 0
             if (paciente.Talla > 0)
             {
                 paciente.Imc = paciente.Peso / (paciente.Talla * paciente.Talla);
@@ -163,6 +164,40 @@ namespace BACKANFAMAPI.Controllers
             else
             {
                 paciente.Imc = null;
+            }
+
+            // Concatenar código al NumExpediente según el Centro
+            switch (paciente.Centro)
+            {
+                case "Managua":
+                    paciente.NumExpediente += "-MG";
+                    break;
+                case "Ciudad Sandino":
+                    paciente.NumExpediente += "-CS";
+                    break;
+                case "Villa Libertad":
+                    paciente.NumExpediente += "-VL";
+                    break;
+                case "Tipitapa":
+                    paciente.NumExpediente += "-TP";
+                    break;
+                case "Masaya":
+                    paciente.NumExpediente += "-MY";
+                    break;
+                case "Granada":
+                    paciente.NumExpediente += "-GR";
+                    break;
+                case "Matagalpa":
+                    paciente.NumExpediente += "-MT";
+                    break;
+                case "Estelí":
+                    paciente.NumExpediente += "-ES";
+                    break;
+                case "León":
+                    paciente.NumExpediente += "-LN";
+                    break;
+                default:
+                    return BadRequest(new { message = "Centro no válido." });
             }
 
             _context.Pacientes.Add(paciente);

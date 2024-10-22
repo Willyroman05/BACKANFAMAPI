@@ -77,12 +77,24 @@ namespace BACKANFAMAPI.Controllers
 
         //Metodo post en la api
         [HttpPost("post")]
+  
         public async Task<ActionResult<Informacion>> PostInformacion(Informacion informacion)
         {
+            // Verificar si ya existe un registro de información con el mismo NumExpediente
+            var existeInformacion = await _context.Informacions
+                .AnyAsync(i => i.NumExpediente == informacion.NumExpediente);
+
+            // Si ya existe, devolver un error indicando que ya se creó un registro con ese NumExpediente
+            if (existeInformacion)
+            {
+                return BadRequest(new { message = $"Ya existe información creada con el NumExpediente {informacion.NumExpediente}." });
+            }
+
+            // Si no existe, agregar la nueva información
             _context.Informacions.Add(informacion);
             await _context.SaveChangesAsync();
+
             return Ok(informacion);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
         //Metodo para listar los datos en la api por expediente

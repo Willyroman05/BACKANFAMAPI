@@ -78,10 +78,21 @@ namespace BACKANFAMAPI.Controllers
         [HttpPost("post")]
         public async Task<ActionResult<AntecedentePatFam>> PostAntecedentePatFams(AntecedentePatFam antecedentePatFam)
         {
+            // Verificar si ya existe un antecedente patológico familiar con el mismo NumExpediente
+            var existeAntecedente = await _context.AntecedentePatFams
+                .AnyAsync(ap => ap.NumExpediente == antecedentePatFam.NumExpediente);
+
+            // Si ya existe, devolver un error indicando que ya se creó un registro con ese NumExpediente
+            if (existeAntecedente)
+            {
+                return BadRequest(new { message = $"Ya existe un Antecedente Patológico Familiar creado con el NumExpediente {antecedentePatFam.NumExpediente}." });
+            }
+
+            // Si no existe, agregar el nuevo antecedente patológico familiar
             _context.AntecedentePatFams.Add(antecedentePatFam);
             await _context.SaveChangesAsync();
+
             return Ok(antecedentePatFam);
-            //return CreatedAtAction("GetRol", new { id = rol.CodRol }, rol);
         }
 
 
