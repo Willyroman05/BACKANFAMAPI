@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirOrigenEspecífico",
-        builder => builder.WithOrigins("http://localhost:5173")
+        builder => builder.WithOrigins("http://10.243.176.194:80", "http://www.expedientedigital_ixchen.com", "http://localhost:5173")
                           .AllowAnyHeader()
                           .AllowAnyMethod());
 });

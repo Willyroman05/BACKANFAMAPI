@@ -395,6 +395,34 @@ namespace BACKANFAMAPI.Controllers
             }
             return Ok(resultados);
         }
+
+        [HttpPut("actualizarNumExpediente")]
+        public async Task<IActionResult> ActualizarNumExpediente(string numExpedienteActual, string nuevoNumExpediente)
+        {
+            if (string.IsNullOrEmpty(numExpedienteActual) || string.IsNullOrEmpty(nuevoNumExpediente))
+            {
+                return BadRequest("Los números de expediente no pueden estar vacíos.");
+            }
+
+            try
+            {
+                // Ejecutar el procedimiento almacenado
+                var result = await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC ActualizarNumExpediente @p0, @p1",
+                    parameters: new[] { numExpedienteActual, nuevoNumExpediente });
+
+                if (result == 0)
+                {
+                    return NotFound("No se encontró el expediente a actualizar.");
+                }
+
+                return Ok("Actualización completada exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al actualizar el número de expediente: {ex.Message}");
+            }
+        }
     }
 
 
